@@ -1,33 +1,34 @@
+# Copyright 2017 INAP
 #
-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
-#    not use this file except in compliance with the License. You may obtain
-#    a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-#         http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-#    Unless required by applicable law or agreed to in writing, software
-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#    License for the specific language governing permissions and limitations
-#    under the License.
-#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-"""
-Command-line interface to the OpenStack Almanach API.
-"""
-
+import os
 import sys
 
 from cliff import app
 from cliff import commandmanager
 
-from almanachclient import version
-from almanachclient.v1 import version_cli
+from almanachclient.commands.endpoint import EndpointCommand
+from almanachclient.commands.version import VersionCommand
+from almanachclient.keystone_client import KeystoneClient
+from almanachclient.v1.client import Client
+from almanachclient import version as client_version
 
 
 class AlmanachCommandManager(commandmanager.CommandManager):
     SHELL_COMMANDS = {
-        "version": version_cli.CliVersionShow,
+        'version': VersionCommand,
+        'endpoint': EndpointCommand,
     }
 
     def load_commands(self, namespace):
@@ -38,18 +39,49 @@ class AlmanachCommandManager(commandmanager.CommandManager):
 class AlmanachApp(app.App):
 
     def __init__(self):
-        super(AlmanachApp, self).__init__(
-            description='Almanach command line client',
-            version=version.__version__,
+        super().__init__(
+            description='Almanach Command Line Client',
+            version=client_version.__version__,
             command_manager=AlmanachCommandManager(None),
             deferred_help=True,
         )
 
+    def build_option_parser(self, description, version, argparse_kwargs=None):
+        parser = super().build_option_parser(description, version, argparse_kwargs)
 
-def main(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    return AlmanachApp().run(args)
+        parser.add_argument('--os-auth-url',
+                            default=os.environ.get('OS_AUTH_URL'),
+                            help='Keystone V3 URL (Env: OS_AUTH_URL).')
+
+        parser.add_argument('--os-region-name',
+                            default=os.environ.get('OS_REGION_NAME'),
+                            help='OpenStack region name (Env: OS_REGION_NAME).')
+
+        parser.add_argument('--os-password',
+                            default=os.environ.get('OS_PASSWORD'),
+                            help='OpenStack password (Env: OS_PASSWORD).')
+
+        parser.add_argument('--os-username',
+                            default=os.environ.get('OS_USERNAME'),
+                            help='OpenStack username (Env: OS_USERNAME).')
+
+        parser.add_argument('--almanach-service',
+                            default=os.environ.get('ALMANACH_SERVICE'),
+                            help='Almanach keystone service name (Env: ALMANACH_SERVICE).')
+        return parser
+
+    def get_client(self):
+        keystone = KeystoneClient(auth_url=self.options.os_auth_url,
+                                  username=self.options.os_username,
+                                  password=self.options.os_password,
+                                  service=self.options.almanach_service,
+                                  region_name=self.options.os_region_name)
+
+        return Client(keystone.get_endpoint_url())
+
+
+def main(argv=sys.argv[1:]):
+    return AlmanachApp().run(argv)
 
 
 if __name__ == '__main__':

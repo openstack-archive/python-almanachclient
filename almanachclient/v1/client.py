@@ -12,8 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from oslotest import base
+from almanachclient.http_client import HttpClient
 
 
-class TestCase(base.BaseTestCase):
-    """Test case base class for all unit tests."""
+class Client(HttpClient):
+    api_version = 'v1'
+
+    def __init__(self, url):
+        self.url = url
+
+    def get_url(self):
+        return self.url
+
+    def get_info(self):
+        return self._get('{}/{}/info'.format(self.url, self.api_version))

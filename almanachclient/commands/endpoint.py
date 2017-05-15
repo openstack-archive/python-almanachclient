@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from oslotest import base
+from cliff.command import Command
 
 
-class TestCase(base.BaseTestCase):
-    """Test case base class for all unit tests."""
+class EndpointCommand(Command):
+    """Show the Almanach Endpoint URL"""
+
+    def take_action(self, parsed_args):
+        self.app.stdout.write('{}\n'.format(self.app.get_client().get_url()))

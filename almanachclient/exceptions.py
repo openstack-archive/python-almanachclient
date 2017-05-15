@@ -12,8 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from oslotest import base
+
+class ClientError(Exception):
+    pass
 
 
-class TestCase(base.BaseTestCase):
-    """Test case base class for all unit tests."""
+class EndpointNotFound(ClientError):
+    pass
+
+
+class HTTPError(ClientError):
+    pass
