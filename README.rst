@@ -2,7 +2,7 @@
 Almanach API Client
 ===================
 
-This is a client library for Almanach built on the Almanch REST API. 
+This is a client library for Almanach built on the Almanach REST API.
 It provides a Python API (The almanachclient module) and a command-line
 tool (almanach-client).
 

@@ -36,7 +36,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'python-almanachclient'
-copyright = u'%d, OpenStack Foundation'
+copyright = u'2017, OpenStack Foundation'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True

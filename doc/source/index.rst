@@ -1,5 +1,5 @@
-Almanach Client
-===============
+Almanach API Client
+===================
 
 Contents:
 
