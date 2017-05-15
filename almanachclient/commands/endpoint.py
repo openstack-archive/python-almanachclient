@@ -16,7 +16,7 @@ from cliff.command import Command
 
 
 class EndpointCommand(Command):
-    """Show the Almanach Endpoint URL"""
+    """Show Almanach Endpoint URL"""
 
     def take_action(self, parsed_args):
         self.app.stdout.write('{}\n'.format(self.app.get_client().get_url()))

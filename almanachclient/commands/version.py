@@ -16,7 +16,7 @@ from cliff.command import Command
 
 
 class VersionCommand(Command):
-    """Show the Almanach version number"""
+    """Show Almanach version number"""
 
     def take_action(self, parsed_args):
         info = self.app.get_client().get_info()

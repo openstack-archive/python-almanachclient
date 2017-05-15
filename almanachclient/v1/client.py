@@ -16,13 +16,17 @@ from almanachclient.http_client import HttpClient
 
 
 class Client(HttpClient):
-    api_version = 'v1'
+    DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 
-    def __init__(self, url):
-        self.url = url
+    api_version = 'v1'
 
     def get_url(self):
         return self.url
 
     def get_info(self):
         return self._get('{}/{}/info'.format(self.url, self.api_version))
+
+    def get_tenant_entities(self, tenant_id, start, end):
+        url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
+        params = {'start': start.strftime(self.DATE_FORMAT), 'end': end.strftime(self.DATE_FORMAT)}
+        return self._get(url, params)

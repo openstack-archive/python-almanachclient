@@ -19,6 +19,7 @@ from cliff import app
 from cliff import commandmanager
 
 from almanachclient.commands.endpoint import EndpointCommand
+from almanachclient.commands.tenant_entities import TenantEntityCommand
 from almanachclient.commands.version import VersionCommand
 from almanachclient.keystone_client import KeystoneClient
 from almanachclient.v1.client import Client
@@ -29,6 +30,7 @@ class AlmanachCommandManager(commandmanager.CommandManager):
     SHELL_COMMANDS = {
         'version': VersionCommand,
         'endpoint': EndpointCommand,
+        'tenant entities': TenantEntityCommand,
     }
 
     def load_commands(self, namespace):
@@ -66,8 +68,12 @@ class AlmanachApp(app.App):
                             help='OpenStack username (Env: OS_USERNAME).')
 
         parser.add_argument('--almanach-service',
-                            default=os.environ.get('ALMANACH_SERVICE'),
+                            default=os.environ.get('ALMANACH_SERVICE', 'almanach'),
                             help='Almanach keystone service name (Env: ALMANACH_SERVICE).')
+
+        parser.add_argument('--almanach-token',
+                            default=os.environ.get('ALMANACH_TOKEN'),
+                            help='Almanach API token (Env: ALMANACH_TOKEN).')
         return parser
 
     def get_client(self):
@@ -77,7 +83,7 @@ class AlmanachApp(app.App):
                                   service=self.options.almanach_service,
                                   region_name=self.options.os_region_name)
 
-        return Client(keystone.get_endpoint_url())
+        return Client(keystone.get_endpoint_url(), token=self.options.almanach_token)
 
 
 def main(argv=sys.argv[1:]):

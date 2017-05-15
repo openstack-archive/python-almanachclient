@@ -24,18 +24,25 @@ logger = logging.getLogger(__name__)
 
 
 class HttpClient(metaclass=abc.ABCMeta):
-    def _get(self, url):
+
+    def __init__(self, url, token=None):
+        self.url = url
+        self.token = token
+
+    def _get(self, url, params=None):
         logger.debug(url)
-        response = requests.get(url, headers=self._get_headers())
+        response = requests.get(url, headers=self._get_headers(), params=params)
+        body = response.json()
 
         if response.status_code != 200:
-            raise exceptions.HTTPError('HTTP Error ({})'.format(response.status_code))
+            raise exceptions.HTTPError('{} ({})'.format(body.get('error') or 'HTTP Error', response.status_code))
 
-        return response.json()
+        return body
 
     def _get_headers(self):
         return {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'User-Agent': 'python-almanachclient/{}'.format(client_version.__version__),
+            'X-Auth-Token': self.token,
         }
