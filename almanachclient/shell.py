@@ -56,7 +56,7 @@ class AlmanachApp(app.App):
                             help='Keystone V3 URL (Env: OS_AUTH_URL).')
 
         parser.add_argument('--os-region-name',
-                            default=os.environ.get('OS_REGION_NAME'),
+                            default=os.environ.get('`'),
                             help='OpenStack region name (Env: OS_REGION_NAME).')
 
         parser.add_argument('--os-password',
