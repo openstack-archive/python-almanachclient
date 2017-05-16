@@ -36,11 +36,11 @@ Usage: :code:`almanach-client endpoint`
 Get tenant entities
 -------------------
 
-Usage: :code:`almanach-client list entities <tenant_id> <start> <end>`
+Usage: :code:`almanach-client list-entities <tenant_id> <start> <end>`
 
 .. code:: bash
 
-    almanach-client list entities bca89ae64dba46b8b74653d8d9ae8364 2016-01-01 2017-05-30
+    almanach-client list-entities bca89ae64dba46b8b74653d8d9ae8364 2016-01-01 2017-05-30
 
     +--------------------------------------+----------+--------+---------------------------+------+---------------------------------------------------------------------------------------+
     | Entity ID                            | Type     | Name   | Start                     | End  | Properties                                                                            |
@@ -53,11 +53,11 @@ Usage: :code:`almanach-client list entities <tenant_id> <start> <end>`
 Update Instance Entity
 ----------------------
 
-Usage: :code:`almanach-client update instance <instance_id> --start <start> --end <end> --name <name> --flavor <flavor>`
+Usage: :code:`almanach-client update-instance <instance_id> --start <start> --end <end> --name <name> --flavor <flavor>`
 
 .. code:: bash
 
-    almanach-client update instance 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d --name vm03
+    almanach-client update-instance 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d --name vm03
 
     +-------------+----------------------------------------------------------+
     | Field       | Value                                                    |
@@ -78,3 +78,18 @@ Arguments:
 * :code:`end`: End date (ISO8601 format)
 * :code:`name`: Instance name (string)
 * :code:`flavor`: Flavor (string)
+
+List Volume Types
+-----------------
+
+Usage: :code:`almanach-client list-volume-types`
+
+.. code:: bash
+
+    almanach-client list-volume-types
+
+    +--------------------------------------+------------------+
+    | Volume Type ID                       | Volume Type Name |
+    +--------------------------------------+------------------+
+    | f3786e9f-f8e6-4944-a3bc-e11b9f112706 | solidfire0       |
+    +--------------------------------------+------------------+

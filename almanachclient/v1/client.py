@@ -27,6 +27,9 @@ class Client(HttpClient):
     def get_info(self):
         return self._get('{}/{}/info'.format(self.url, self.api_version))
 
+    def get_volume_types(self):
+        return self._get('{}/{}/volume_types'.format(self.url, self.api_version))
+
     def get_tenant_entities(self, tenant_id, start, end):
         url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}

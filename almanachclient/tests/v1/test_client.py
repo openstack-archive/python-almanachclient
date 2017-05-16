@@ -91,3 +91,16 @@ class TestClient(base.TestCase):
                                          params=None,
                                          data=json.dumps({'name': 'some entity'}),
                                          headers=self.headers)
+
+    @mock.patch('requests.get')
+    def test_get_volume_types(self, requests):
+        response = mock.Mock()
+        expected = [{'volume_type_id': 'some uuid', 'volume_type_name': 'some volume'}]
+
+        requests.return_value = response
+        response.json.return_value = expected
+        response.status_code = 200
+
+        self.assertEqual(expected, self.client.get_volume_types())
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_types'),
+                                         headers=self.headers, params=None)
