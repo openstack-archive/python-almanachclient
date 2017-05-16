@@ -33,6 +33,16 @@ class Client(HttpClient):
     def get_volume_type(self, volume_type_id):
         return self._get('{}/{}/volume_type/{}'.format(self.url, self.api_version, volume_type_id))
 
+    def create_volume_type(self, volume_type_id, volume_type_name):
+        url = '{}/{}/volume_type'.format(self.url, self.api_version)
+        data = {'type_id': volume_type_id, 'type_name': volume_type_name}
+        self._post(url, data)
+        return True
+
+    def delete_volume_type(self, volume_type_id):
+        self._delete('{}/{}/volume_type/{}'.format(self.url, self.api_version, volume_type_id))
+        return True
+
     def get_tenant_entities(self, tenant_id, start, end):
         url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}

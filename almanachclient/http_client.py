@@ -41,8 +41,19 @@ class HttpClient(metaclass=abc.ABCMeta):
                                                  params=params,
                                                  data=json.dumps(data)))
 
+    def _post(self, url, data, params=None):
+        logger.debug(url)
+        return self._parse_response(requests.post(url,
+                                                  headers=self._get_headers(),
+                                                  params=params,
+                                                  data=json.dumps(data)), 201)
+
+    def _delete(self, url, params=None):
+        logger.debug(url)
+        return self._parse_response(requests.delete(url, headers=self._get_headers(), params=params), 202)
+
     def _parse_response(self, response, expected_status=200):
-        body = response.json()
+        body = response.json() if len(response.text) > 0 else ''
 
         if response.status_code != expected_status:
             raise exceptions.HTTPError('{} ({})'.format(body.get('error') or 'HTTP Error', response.status_code))

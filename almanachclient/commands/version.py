@@ -20,4 +20,4 @@ class VersionCommand(Command):
 
     def take_action(self, parsed_args):
         info = self.app.get_client().get_info()
-        self.app.stdout.write('{}\n'.format(info.get('info', {}).get('version')))
+        return info.get('info', {}).get('version')

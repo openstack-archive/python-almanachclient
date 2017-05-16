@@ -18,9 +18,11 @@ import sys
 from cliff import app
 from cliff import commandmanager
 
+from almanachclient.commands.create_volume_type import CreateVolumeTypeCommand
+from almanachclient.commands.delete_volume_type import DeleteVolumeTypeCommand
 from almanachclient.commands.endpoint import EndpointCommand
 from almanachclient.commands.get_volume_type import GetVolumeTypeCommand
-from almanachclient.commands.list_entities import ListEntityCommand
+from almanachclient.commands.list_entity import ListEntityCommand
 from almanachclient.commands.list_volume_type import ListVolumeTypeCommand
 from almanachclient.commands.update_instance_entity import UpdateInstanceEntityCommand
 from almanachclient.commands.version import VersionCommand
@@ -33,6 +35,8 @@ class AlmanachCommandManager(commandmanager.CommandManager):
     SHELL_COMMANDS = {
         'version': VersionCommand,
         'endpoint': EndpointCommand,
+        'create-volume-type': CreateVolumeTypeCommand,
+        'delete-volume-type': DeleteVolumeTypeCommand,
         'list-volume-types': ListVolumeTypeCommand,
         'get-volume-type': GetVolumeTypeCommand,
         'list-entities': ListEntityCommand,

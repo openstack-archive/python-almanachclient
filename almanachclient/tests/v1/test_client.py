@@ -25,7 +25,7 @@ class TestClient(base.TestCase):
 
     def setUp(self):
         super().setUp()
-        self.response = mock.Mock()
+        self.response = mock.Mock(text='sample data')
         self.url = 'http://almanach_url'
         self.token = 'token'
         self.headers = {'Content-Type': 'application/json',
@@ -112,3 +112,29 @@ class TestClient(base.TestCase):
         self.assertEqual(expected, self.client.get_volume_type('some-uuid'))
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_type/some-uuid'),
                                          headers=self.headers, params=None)
+
+    @mock.patch('requests.post')
+    def test_create_volume_type(self, requests):
+        data = {'type_id': 'some uuid', 'type_name': 'some name'}
+        self.response.text = ''
+
+        requests.return_value = self.response
+        self.response.status_code = 201
+
+        self.assertTrue(self.client.create_volume_type('some uuid', 'some name'))
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_type'),
+                                         headers=self.headers,
+                                         data=json.dumps(data),
+                                         params=None)
+
+    @mock.patch('requests.delete')
+    def test_delete_volume_type(self, requests):
+        self.response.text = ''
+
+        requests.return_value = self.response
+        self.response.status_code = 202
+
+        self.assertTrue(self.client.delete_volume_type('some uuid'))
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_type/some uuid'),
+                                         headers=self.headers,
+                                         params=None)

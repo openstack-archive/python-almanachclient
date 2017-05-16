@@ -109,3 +109,25 @@ Usage: :code:`almanach-client get-volume-type <volume_type_id>`
     | Volume Type ID   | f3786e9f-f8e6-4944-a3bc-e11b9f112706 |
     | Volume Type Name | solidfire0                           |
     +------------------+--------------------------------------+
+
+Create Volume Type
+------------------
+
+Usage: :code:`almanach-client create-volume-type <volume_type_id> <volume_type_name>`
+
+.. code:: bash
+
+    almanach-client create-volume-type f1c2db7b-946e-47a4-b443-914a669a6672 my_volume_type
+
+    Success
+
+Delete Volume Type
+------------------
+
+Usage: :code:`almanach-client delete-volume-type <volume_type_id>`
+
+.. code:: bash
+
+    almanach-client delete-volume-type f1c2db7b-946e-47a4-b443-914a669a6672
+
+    Success

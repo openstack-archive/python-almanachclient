@@ -16,7 +16,7 @@ from argparse import Namespace
 import datetime
 from unittest import mock
 
-from almanachclient.commands.list_entities import ListEntityCommand
+from almanachclient.commands.list_entity import ListEntityCommand
 
 from almanachclient.tests import base
 

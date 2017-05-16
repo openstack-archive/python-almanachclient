@@ -15,8 +15,16 @@
 from cliff.command import Command
 
 
-class EndpointCommand(Command):
-    """Show Almanach Endpoint URL"""
+class CreateVolumeTypeCommand(Command):
+    """Create volume type"""
+
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
+        parser.add_argument('volume_type_id', help='Volume Type ID')
+        parser.add_argument('volume_type_name', help='Volume Type Name')
+        return parser
 
     def take_action(self, parsed_args):
-        return self.app.get_client().get_url()
+        self.app.get_client().create_volume_type(parsed_args.volume_type_id,
+                                                 parsed_args.volume_type_name)
+        return 'Success'
