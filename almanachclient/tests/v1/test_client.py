@@ -25,6 +25,7 @@ class TestClient(base.TestCase):
 
     def setUp(self):
         super().setUp()
+        self.response = mock.Mock()
         self.url = 'http://almanach_url'
         self.token = 'token'
         self.headers = {'Content-Type': 'application/json',
@@ -36,35 +37,32 @@ class TestClient(base.TestCase):
 
     @mock.patch('requests.get')
     def test_get_info(self, requests):
-        response = mock.Mock()
         expected = {
             'info': {'version': '1.2.3'},
             "database": {'all_entities': 2, 'active_entities': 1}
         }
 
-        requests.return_value = response
-        response.json.return_value = expected
-        response.status_code = 200
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
 
         self.assertEqual(expected, self.client.get_info())
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/info'), headers=self.headers, params=None)
 
     @mock.patch('requests.get')
     def test_get_info_with_http_error(self, requests):
-        response = mock.Mock()
-        requests.return_value = response
-        response.status_code = 500
+        requests.return_value = self.response
+        self.response.status_code = 500
 
         self.assertRaises(exceptions.HTTPError, self.client.get_info)
 
     @mock.patch('requests.get')
     def test_get_tenant_entities(self, requests):
-        response = mock.Mock()
         expected = [mock.Mock()]
 
-        requests.return_value = response
-        response.json.return_value = expected
-        response.status_code = 200
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
 
         start = datetime.now()
         end = datetime.now()
@@ -78,12 +76,11 @@ class TestClient(base.TestCase):
 
     @mock.patch('requests.put')
     def test_update_instance_entity(self, requests):
-        response = mock.Mock()
         expected = dict(name='some entity')
 
-        requests.return_value = response
-        response.json.return_value = expected
-        response.status_code = 200
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
 
         self.assertEqual(expected, self.client.update_instance_entity('my_instance_id', name='some entity'))
 
@@ -94,13 +91,24 @@ class TestClient(base.TestCase):
 
     @mock.patch('requests.get')
     def test_get_volume_types(self, requests):
-        response = mock.Mock()
         expected = [{'volume_type_id': 'some uuid', 'volume_type_name': 'some volume'}]
 
-        requests.return_value = response
-        response.json.return_value = expected
-        response.status_code = 200
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
 
         self.assertEqual(expected, self.client.get_volume_types())
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_types'),
+                                         headers=self.headers, params=None)
+
+    @mock.patch('requests.get')
+    def test_get_volume_type(self, requests):
+        expected = [{'volume_type_id': 'some uuid', 'volume_type_name': 'some volume'}]
+
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
+
+        self.assertEqual(expected, self.client.get_volume_type('some-uuid'))
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_type/some-uuid'),
                                          headers=self.headers, params=None)

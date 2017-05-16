@@ -4,12 +4,12 @@ Command Line Usage
 Environment variables
 ---------------------
 
-* `OS_AUTH_URL`: Keystone URL (v3 endpoint)
-* `OS_AUTH_URL`: OpenStack region name
-* `OS_USERNAME`: OpenStack username
-* `OS_PASSWORD`: OpenStack password
-* `ALMANACH_SERVICE`: Almanach catalog service name
-* `ALMANACH_TOKEN`: Almanach private key
+* :code:`OS_AUTH_URL`: Keystone URL (v3 endpoint)
+* :code:`OS_AUTH_URL`: OpenStack region name
+* :code:`OS_USERNAME`: OpenStack username
+* :code:`OS_PASSWORD`: OpenStack password
+* :code:`ALMANACH_SERVICE`: Almanach catalog service name
+* :code:`ALMANACH_TOKEN`: Almanach API key
 
 Get server version
 ------------------
@@ -93,3 +93,19 @@ Usage: :code:`almanach-client list-volume-types`
     +--------------------------------------+------------------+
     | f3786e9f-f8e6-4944-a3bc-e11b9f112706 | solidfire0       |
     +--------------------------------------+------------------+
+
+Get Volume Type
+---------------
+
+Usage: :code:`almanach-client get-volume-type <volume_type_id>`
+
+.. code:: bash
+
+    almanach-client get-volume-type f3786e9f-f8e6-4944-a3bc-e11b9f112706
+
+    +------------------+--------------------------------------+
+    | Field            | Value                                |
+    +------------------+--------------------------------------+
+    | Volume Type ID   | f3786e9f-f8e6-4944-a3bc-e11b9f112706 |
+    | Volume Type Name | solidfire0                           |
+    +------------------+--------------------------------------+
