@@ -42,8 +42,10 @@ class ListEntityCommand(Lister):
 
             if entity_type == 'instance':
                 properties = dict(flavor=entity.get('flavor'), image=entity.get('image_meta', entity.get('os')))
-            else:
+            elif entity_type == 'volume':
                 properties = dict(volume_type=entity.get('volume_type'), attached_to=entity.get('attached_to'))
+            else:
+                properties = None
 
             rows.append((entity.get('entity_id'), entity_type, entity.get('name'),
                          entity.get('start'), entity.get('end'), properties))

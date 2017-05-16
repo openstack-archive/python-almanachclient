@@ -73,8 +73,8 @@ Usage: :code:`almanach-client update instance <instance_id> --start <start> --en
 
 Arguments:
 
-* :code:`instance_id`: Instance ID
+* :code:`instance_id`: Instance ID (UUID)
 * :code:`start`: Start date (ISO8601 format)
-* :code:`end`: Start date (ISO8601 format)
-* :code:`name`: Start date (ISO8601 format)
-* :code:`flavor`: Start date (ISO8601 format)
+* :code:`end`: End date (ISO8601 format)
+* :code:`name`: Instance name (string)
+* :code:`flavor`: Flavor (string)
