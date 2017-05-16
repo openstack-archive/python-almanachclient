@@ -16,7 +16,8 @@ from almanachclient.http_client import HttpClient
 
 
 class Client(HttpClient):
-    DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
+    DATE_FORMAT_QS = '%Y-%m-%d %H:%M:%S.%f'
+    DATE_FORMAT_BODY = '%Y-%m-%dT%H:%M:%S.%fZ'
 
     api_version = 'v1'
 
@@ -28,5 +29,20 @@ class Client(HttpClient):
 
     def get_tenant_entities(self, tenant_id, start, end):
         url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
-        params = {'start': start.strftime(self.DATE_FORMAT), 'end': end.strftime(self.DATE_FORMAT)}
+        params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
         return self._get(url, params)
+
+    def update_instance_entity(self, instance_id, **kwargs):
+        url = '{}/{}/entity/instance/{}'.format(self.url, self.api_version, instance_id)
+
+        for param in ['start', 'end']:
+            if param in kwargs:
+                kwargs[param] = self._format_body_datetime(kwargs[param])
+
+        return self._put(url, kwargs)
+
+    def _format_body_datetime(self, value):
+        return value.strftime(self.DATE_FORMAT_BODY)
+
+    def _format_qs_datetime(self, value):
+        return value.strftime(self.DATE_FORMAT_QS)

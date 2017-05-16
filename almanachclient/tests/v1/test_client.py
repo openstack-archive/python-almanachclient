@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from datetime import datetime
+import json
 from unittest import mock
 
 from almanachclient import exceptions
@@ -21,6 +22,7 @@ from almanachclient.v1.client import Client
 
 
 class TestClient(base.TestCase):
+
     def setUp(self):
         super().setUp()
         self.url = 'http://almanach_url'
@@ -66,10 +68,26 @@ class TestClient(base.TestCase):
 
         start = datetime.now()
         end = datetime.now()
-        params = dict(start=start.strftime(Client.DATE_FORMAT), end=end.strftime(Client.DATE_FORMAT))
+        params = dict(start=start.strftime(Client.DATE_FORMAT_QS), end=end.strftime(Client.DATE_FORMAT_QS))
 
         self.assertEqual(expected, self.client.get_tenant_entities('my_tenant_id', start, end))
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/my_tenant_id/entities'),
                                          params=params,
+                                         headers=self.headers)
+
+    @mock.patch('requests.put')
+    def test_update_instance_entity(self, requests):
+        response = mock.Mock()
+        expected = dict(name='some entity')
+
+        requests.return_value = response
+        response.json.return_value = expected
+        response.status_code = 200
+
+        self.assertEqual(expected, self.client.update_instance_entity('my_instance_id', name='some entity'))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/entity/instance/my_instance_id'),
+                                         params=None,
+                                         data=json.dumps({'name': 'some entity'}),
                                          headers=self.headers)

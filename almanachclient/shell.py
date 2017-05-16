@@ -19,7 +19,8 @@ from cliff import app
 from cliff import commandmanager
 
 from almanachclient.commands.endpoint import EndpointCommand
-from almanachclient.commands.tenant_entities import TenantEntityCommand
+from almanachclient.commands.list_entities import ListEntityCommand
+from almanachclient.commands.update_instance_entity import UpdateInstanceEntityCommand
 from almanachclient.commands.version import VersionCommand
 from almanachclient.keystone_client import KeystoneClient
 from almanachclient.v1.client import Client
@@ -30,7 +31,8 @@ class AlmanachCommandManager(commandmanager.CommandManager):
     SHELL_COMMANDS = {
         'version': VersionCommand,
         'endpoint': EndpointCommand,
-        'tenant entities': TenantEntityCommand,
+        'list entities': ListEntityCommand,
+        'update instance': UpdateInstanceEntityCommand,
     }
 
     def load_commands(self, namespace):

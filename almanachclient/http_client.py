@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import abc
+import json
 import logging
 
 import requests
@@ -31,10 +32,19 @@ class HttpClient(metaclass=abc.ABCMeta):
 
     def _get(self, url, params=None):
         logger.debug(url)
-        response = requests.get(url, headers=self._get_headers(), params=params)
+        return self._parse_response(requests.get(url, headers=self._get_headers(), params=params))
+
+    def _put(self, url, data, params=None):
+        logger.debug(url)
+        return self._parse_response(requests.put(url,
+                                                 headers=self._get_headers(),
+                                                 params=params,
+                                                 data=json.dumps(data)))
+
+    def _parse_response(self, response, expected_status=200):
         body = response.json()
 
-        if response.status_code != 200:
+        if response.status_code != expected_status:
             raise exceptions.HTTPError('{} ({})'.format(body.get('error') or 'HTTP Error', response.status_code))
 
         return body
