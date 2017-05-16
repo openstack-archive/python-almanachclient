@@ -14,33 +14,33 @@ Environment variables
 Get server version
 ------------------
 
-Usage: :code:`almanach-client version`
+Usage: :code:`almanach version`
 
 .. code:: bash
 
-    almanach-client version
+    almanach version
 
     4.0.9
 
 Get Endpoint URL
 ----------------
 
-Usage: :code:`almanach-client endpoint`
+Usage: :code:`almanach endpoint`
 
 .. code:: bash
 
-    almanach-client endpoint
+    almanach endpoint
 
     http://almanach.example.org
 
 Get tenant entities
 -------------------
 
-Usage: :code:`almanach-client list-entities <tenant_id> <start> <end>`
+Usage: :code:`almanach list-entities <tenant_id> <start> <end>`
 
 .. code:: bash
 
-    almanach-client list-entities bca89ae64dba46b8b74653d8d9ae8364 2016-01-01 2017-05-30
+    almanach list-entities bca89ae64dba46b8b74653d8d9ae8364 2016-01-01 2017-05-30
 
     +--------------------------------------+----------+--------+---------------------------+------+---------------------------------------------------------------------------------------+
     | Entity ID                            | Type     | Name   | Start                     | End  | Properties                                                                            |
@@ -53,11 +53,11 @@ Usage: :code:`almanach-client list-entities <tenant_id> <start> <end>`
 Update Instance Entity
 ----------------------
 
-Usage: :code:`almanach-client update-instance <instance_id> --start <start> --end <end> --name <name> --flavor <flavor>`
+Usage: :code:`almanach update-instance <instance_id> --start <start> --end <end> --name <name> --flavor <flavor>`
 
 .. code:: bash
 
-    almanach-client update-instance 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d --name vm03
+    almanach update-instance 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d --name vm03
 
     +-------------+----------------------------------------------------------+
     | Field       | Value                                                    |
@@ -82,11 +82,11 @@ Arguments:
 List Volume Types
 -----------------
 
-Usage: :code:`almanach-client list-volume-types`
+Usage: :code:`almanach list-volume-types`
 
 .. code:: bash
 
-    almanach-client list-volume-types
+    almanach list-volume-types
 
     +--------------------------------------+------------------+
     | Volume Type ID                       | Volume Type Name |
@@ -97,11 +97,11 @@ Usage: :code:`almanach-client list-volume-types`
 Get Volume Type
 ---------------
 
-Usage: :code:`almanach-client get-volume-type <volume_type_id>`
+Usage: :code:`almanach get-volume-type <volume_type_id>`
 
 .. code:: bash
 
-    almanach-client get-volume-type f3786e9f-f8e6-4944-a3bc-e11b9f112706
+    almanach get-volume-type f3786e9f-f8e6-4944-a3bc-e11b9f112706
 
     +------------------+--------------------------------------+
     | Field            | Value                                |
@@ -113,21 +113,21 @@ Usage: :code:`almanach-client get-volume-type <volume_type_id>`
 Create Volume Type
 ------------------
 
-Usage: :code:`almanach-client create-volume-type <volume_type_id> <volume_type_name>`
+Usage: :code:`almanach create-volume-type <volume_type_id> <volume_type_name>`
 
 .. code:: bash
 
-    almanach-client create-volume-type f1c2db7b-946e-47a4-b443-914a669a6672 my_volume_type
+    almanach create-volume-type f1c2db7b-946e-47a4-b443-914a669a6672 my_volume_type
 
     Success
 
 Delete Volume Type
 ------------------
 
-Usage: :code:`almanach-client delete-volume-type <volume_type_id>`
+Usage: :code:`almanach delete-volume-type <volume_type_id>`
 
 .. code:: bash
 
-    almanach-client delete-volume-type f1c2db7b-946e-47a4-b443-914a669a6672
+    almanach delete-volume-type f1c2db7b-946e-47a4-b443-914a669a6672
 
     Success
