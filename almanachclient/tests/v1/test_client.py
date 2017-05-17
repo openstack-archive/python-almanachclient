@@ -158,15 +158,6 @@ class TestClient(base.TestCase):
     def test_create_instance(self, requests):
         self.response.text = ''
         date = datetime.now()
-        payload = {
-            "flavor": "flavor",
-            "id": "instance_id",
-            "name": "name",
-            "created_at": date.strftime(Client.DATE_FORMAT_BODY),
-            "os_distro": None,
-            "os_type": None,
-            "os_version": None,
-        }
 
         requests.return_value = self.response
         self.response.status_code = 201
@@ -174,7 +165,7 @@ class TestClient(base.TestCase):
         self.assertTrue(self.client.create_instance('tenant_id', 'instance_id', 'name', 'flavor', date))
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/tenant_id/instance'),
                                          headers=self.headers,
-                                         data=json.dumps(payload),
+                                         data=mock.ANY,
                                          params=None)
 
     @mock.patch('requests.get')
@@ -192,5 +183,23 @@ class TestClient(base.TestCase):
         self.assertEqual(expected, self.client.get_instances('my_tenant_id', start, end))
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/my_tenant_id/instances'),
+                                         params=params,
+                                         headers=self.headers)
+
+    @mock.patch('requests.get')
+    def test_get_volumes(self, requests):
+        expected = [mock.Mock()]
+
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
+
+        start = datetime.now()
+        end = datetime.now()
+        params = dict(start=start.strftime(Client.DATE_FORMAT_QS), end=end.strftime(Client.DATE_FORMAT_QS))
+
+        self.assertEqual(expected, self.client.get_volumes('my_tenant_id', start, end))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/my_tenant_id/volumes'),
                                          params=params,
                                          headers=self.headers)

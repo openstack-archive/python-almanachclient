@@ -47,7 +47,7 @@ Usage: :code:`almanach list-entities <tenant_id> <start> <end>`
     +--------------------------------------+----------+--------+---------------------------+------+---------------------------------------------------------------------------------------+
     | 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d | instance | vm01   | 2017-05-09 14:19:14+00:00 | None | {'image': {'distro': 'centos', 'version': '7', 'os_type': 'linux'}, 'flavor': 'A1.1'} |
     | f0690323-c394-4848-a272-964aad6431aa | instance | vm02   | 2017-05-15 18:31:42+00:00 | None | {'image': {'distro': 'centos', 'version': '7', 'os_type': 'linux'}, 'flavor': 'A1.1'} |
-    | 3e3b22e6-a10c-4c00-b8e5-05fcc8422b11 | volume   | vol01  | 2017-05-15 19:11:14+00:00 | None | {'attached_to': [], 'volume_type': 'solidfire0'}                                      |
+    | 3e3b22e6-a10c-4c00-b8e5-05fcc8422b11 | volume   | vol01  | 2017-05-15 19:11:14+00:00 | None | {'size': 1, 'attached_to': [], 'volume_type': 'solidfire0'}                           |
     +--------------------------------------+----------+--------+---------------------------+------+---------------------------------------------------------------------------------------+
 
 Arguments:
@@ -149,6 +149,27 @@ Usage: :code:`almanach delete-instance <instance_id> --end <end>
 Arguments:
 
 * :code:`instance_id`: Instance ID (UUID)
+* :code:`end`: End date (ISO8601 format)
+
+List Volumes
+------------
+
+Usage: :code:`almanach list-volumes <tenant_id> <start> <end>`
+
+.. code:: bash
+
+    almanach list-volumes bca89ae64dba46b8b74653d8d9ae8364 2016-01-01 2017-09-01
+
+    +--------------------------------------+------+---------------------------+------+------------+------+-------------+
+    | Volume ID                            | Name | Start                     | End  | Type       | Size | Attachments |
+    +--------------------------------------+------+---------------------------+------+------------+------+-------------+
+    | 3e3b22e6-a10c-4c00-b8e5-05fcc8422b11 | vol1 | 2017-05-15 19:11:14+00:00 | None | solidfire0 |    1 | []          |
+    +--------------------------------------+------+---------------------------+------+------------+------+-------------+
+
+Arguments:
+
+* :code:`tenant_id`: Tenant ID (UUID)
+* :code:`start`: Start date (ISO8601 format)
 * :code:`end`: End date (ISO8601 format)
 
 List Volume Types

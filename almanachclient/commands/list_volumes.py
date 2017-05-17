@@ -16,10 +16,10 @@ from cliff.lister import Lister
 from dateutil import parser
 
 
-class ListEntityCommand(Lister):
-    """Show all entities for a given tenant"""
+class ListVolumeCommand(Lister):
+    """Show all volumes for a given tenant"""
 
-    columns = ('Entity ID', 'Type', 'Name', 'Start', 'End', 'Properties')
+    columns = ('Volume ID', 'Name', 'Start', 'End', 'Type', 'Size', 'Attachments')
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
@@ -31,25 +31,18 @@ class ListEntityCommand(Lister):
     def take_action(self, parsed_args):
         start = parser.parse(parsed_args.start)
         end = parser.parse(parsed_args.end)
-        entities = self.app.get_client().get_tenant_entities(parsed_args.tenant_id, start, end)
+        entities = self.app.get_client().get_volumes(parsed_args.tenant_id, start, end)
         return self.columns, self._format_rows(entities)
 
     def _format_rows(self, entities):
         rows = []
 
         for entity in entities:
-            entity_type = entity.get('entity_type')
-
-            if entity_type == 'instance':
-                properties = dict(flavor=entity.get('flavor'),
-                                  image=entity.get('image_meta', entity.get('os')))
-            elif entity_type == 'volume':
-                properties = dict(volume_type=entity.get('volume_type'),
-                                  size=entity.get('size'),
-                                  attached_to=entity.get('attached_to'))
-            else:
-                properties = None
-
-            rows.append((entity.get('entity_id'), entity_type, entity.get('name'),
-                         entity.get('start'), entity.get('end'), properties))
+            rows.append((entity.get('entity_id'),
+                         entity.get('name'),
+                         entity.get('start'),
+                         entity.get('end'),
+                         entity.get('volume_type'),
+                         entity.get('size'),
+                         entity.get('attached_to')))
         return rows
