@@ -33,5 +33,5 @@ class TestCreateVolumeTypeCommand(base.TestCase):
         self.command = CreateVolumeTypeCommand(self.app, self.app_args)
 
     def test_execute_command(self):
-        self.assertTrue(self.command.take_action(self.args))
+        self.assertEqual('Success', self.command.take_action(self.args))
         self.client.create_volume_type.assert_called_once_with('some uuid', 'some name')

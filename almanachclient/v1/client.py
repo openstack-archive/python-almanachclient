@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
+
 from almanachclient.http_client import HttpClient
 
 
@@ -43,6 +45,11 @@ class Client(HttpClient):
         self._delete('{}/{}/volume_type/{}'.format(self.url, self.api_version, volume_type_id))
         return True
 
+    def delete_instance(self, instance_id, end=None):
+        data = {'date': self._format_body_datetime(end or datetime.now())}
+        self._delete('{}/{}/instance/{}'.format(self.url, self.api_version, instance_id), data=data)
+        return True
+
     def get_tenant_entities(self, tenant_id, start, end):
         url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
@@ -57,8 +64,8 @@ class Client(HttpClient):
 
         return self._put(url, kwargs)
 
-    def _format_body_datetime(self, value):
-        return value.strftime(self.DATE_FORMAT_BODY)
+    def _format_body_datetime(self, dt):
+        return dt.strftime(self.DATE_FORMAT_BODY)
 
-    def _format_qs_datetime(self, value):
-        return value.strftime(self.DATE_FORMAT_QS)
+    def _format_qs_datetime(self, dt):
+        return dt.strftime(self.DATE_FORMAT_QS)

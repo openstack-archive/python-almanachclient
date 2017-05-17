@@ -137,4 +137,19 @@ class TestClient(base.TestCase):
         self.assertTrue(self.client.delete_volume_type('some uuid'))
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_type/some uuid'),
                                          headers=self.headers,
+                                         data=None,
+                                         params=None)
+
+    @mock.patch('requests.delete')
+    def test_delete_instance(self, requests):
+        self.response.text = ''
+        date = datetime.now()
+
+        requests.return_value = self.response
+        self.response.status_code = 202
+
+        self.assertTrue(self.client.delete_instance('some uuid', date))
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/instance/some uuid'),
+                                         headers=self.headers,
+                                         data=json.dumps({'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          params=None)

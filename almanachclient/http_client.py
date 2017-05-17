@@ -43,14 +43,19 @@ class HttpClient(metaclass=abc.ABCMeta):
 
     def _post(self, url, data, params=None):
         logger.debug(url)
-        return self._parse_response(requests.post(url,
-                                                  headers=self._get_headers(),
-                                                  params=params,
-                                                  data=json.dumps(data)), 201)
+        response = requests.post(url,
+                                 headers=self._get_headers(),
+                                 params=params,
+                                 data=json.dumps(data))
+        return self._parse_response(response, 201)
 
-    def _delete(self, url, params=None):
+    def _delete(self, url, params=None, data=None):
         logger.debug(url)
-        return self._parse_response(requests.delete(url, headers=self._get_headers(), params=params), 202)
+        response = requests.delete(url,
+                                   headers=self._get_headers(),
+                                   params=params,
+                                   data=json.dumps(data) if data else None)
+        return self._parse_response(response, 202)
 
     def _parse_response(self, response, expected_status=200):
         body = response.json() if len(response.text) > 0 else ''

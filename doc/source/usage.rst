@@ -79,6 +79,19 @@ Arguments:
 * :code:`name`: Instance name (string)
 * :code:`flavor`: Flavor (string)
 
+Delete Instance
+---------------
+
+Usage: :code:`almanach delete-instance <instance_id> --end <end>
+
+.. code:: bash
+
+    almanach delete-instance 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d
+
+    Success
+
+* :code:`end`: End date, if not specified the current date time is used (ISO8601 format)
+
 List Volume Types
 -----------------
 

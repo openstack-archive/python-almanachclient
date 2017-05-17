@@ -15,23 +15,23 @@
 from argparse import Namespace
 from unittest import mock
 
-from almanachclient.commands.delete_volume_type import DeleteVolumeTypeCommand
+from almanachclient.commands.delete_instance import DeleteInstanceCommand
 
 from almanachclient.tests import base
 
 
-class TestDeleteVolumeTypeCommand(base.TestCase):
+class TestDeleteInstanceCommand(base.TestCase):
 
     def setUp(self):
         super().setUp()
         self.app = mock.Mock()
         self.app_args = mock.Mock()
-        self.args = Namespace(volume_type_id='some uuid')
+        self.args = Namespace(instance_id='some uuid', end=None)
 
         self.client = mock.Mock()
         self.app.get_client.return_value = self.client
-        self.command = DeleteVolumeTypeCommand(self.app, self.app_args)
+        self.command = DeleteInstanceCommand(self.app, self.app_args)
 
     def test_execute_command(self):
         self.assertEqual('Success', self.command.take_action(self.args))
-        self.client.delete_volume_type.assert_called_once_with('some uuid')
+        self.client.delete_instance.assert_called_once_with('some uuid', None)
