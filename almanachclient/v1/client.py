@@ -45,6 +45,20 @@ class Client(HttpClient):
         self._delete('{}/{}/volume_type/{}'.format(self.url, self.api_version, volume_type_id))
         return True
 
+    def create_instance(self, tenant_id, instance_id, name, flavor, start, image_meta=None):
+        url = '{}/{}/project/{}/instance'.format(self.url, self.api_version, tenant_id)
+        image_meta = image_meta or {}
+        self._post(url, data={
+            'id': instance_id,
+            'created_at': self._format_body_datetime(start),
+            'name': name,
+            'flavor': flavor,
+            'os_distro': image_meta.get('distro'),
+            'os_version': image_meta.get('version'),
+            'os_type': image_meta.get('type'),
+        })
+        return True
+
     def delete_instance(self, instance_id, end=None):
         data = {'date': self._format_body_datetime(end or datetime.now())}
         self._delete('{}/{}/instance/{}'.format(self.url, self.api_version, instance_id), data=data)

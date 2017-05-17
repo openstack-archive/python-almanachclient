@@ -16,28 +16,33 @@ from argparse import Namespace
 import datetime
 from unittest import mock
 
-from almanachclient.commands.delete_instance import DeleteInstanceCommand
+from almanachclient.commands.create_instance import CreateInstanceCommand
 
 from almanachclient.tests import base
 
 
-class TestDeleteInstanceCommand(base.TestCase):
+class TestCreateInstanceCommand(base.TestCase):
 
     def setUp(self):
         super().setUp()
         self.app = mock.Mock()
         self.app_args = mock.Mock()
-        self.args = Namespace(instance_id='some uuid', end=None)
+        self.args = Namespace(tenant_id='tenant uuid',
+                              instance_id='instance uuid',
+                              name='vm',
+                              flavor='flavor',
+                              start='2017-01-01',
+                              image_meta='{"type": "linux"}')
 
         self.client = mock.Mock()
         self.app.get_client.return_value = self.client
-        self.command = DeleteInstanceCommand(self.app, self.app_args)
+        self.command = CreateInstanceCommand(self.app, self.app_args)
 
     def test_execute_command(self):
         self.assertEqual('Success', self.command.take_action(self.args))
-        self.client.delete_instance.assert_called_once_with('some uuid', None)
-
-    def test_execute_command_with_date(self):
-        self.args.end = '2017-01-01'
-        self.assertEqual('Success', self.command.take_action(self.args))
-        self.client.delete_instance.assert_called_once_with('some uuid', datetime.datetime(2017, 1, 1, 0, 0))
+        self.client.create_instance.assert_called_once_with('tenant uuid',
+                                                            'instance uuid',
+                                                            'vm',
+                                                            'flavor',
+                                                            datetime.datetime(2017, 1, 1, 0, 0),
+                                                            {'type': 'linux'})

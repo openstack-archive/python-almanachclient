@@ -18,6 +18,7 @@ import sys
 from cliff import app
 from cliff import commandmanager
 
+from almanachclient.commands.create_instance import CreateInstanceCommand
 from almanachclient.commands.create_volume_type import CreateVolumeTypeCommand
 from almanachclient.commands.delete_instance import DeleteInstanceCommand
 from almanachclient.commands.delete_volume_type import DeleteVolumeTypeCommand
@@ -40,6 +41,7 @@ class AlmanachCommandManager(commandmanager.CommandManager):
         'delete-volume-type': DeleteVolumeTypeCommand,
         'list-volume-types': ListVolumeTypeCommand,
         'get-volume-type': GetVolumeTypeCommand,
+        'create-instance': CreateInstanceCommand,
         'delete-instance': DeleteInstanceCommand,
         'list-entities': ListEntityCommand,
         'update instance': UpdateInstanceEntityCommand,

@@ -50,6 +50,31 @@ Usage: :code:`almanach list-entities <tenant_id> <start> <end>`
     | 3e3b22e6-a10c-4c00-b8e5-05fcc8422b11 | volume   | vol01  | 2017-05-15 19:11:14+00:00 | None | {'attached_to': [], 'volume_type': 'solidfire0'}                                      |
     +--------------------------------------+----------+--------+---------------------------+------+---------------------------------------------------------------------------------------+
 
+Create Instance Entity
+----------------------
+
+Usage: :code:`almanach create_instance <tenant_id> <instance_id> <name> <flavor> <start> --image-meta <image_meta>`
+
+Example:
+
+.. code:: bash
+
+    almanach create-instance bca89ae64dba46b8b74653d8d9ae8364 \
+        8d8d0dc7-5f06-40aa-aba8-c4ff02aeb866 \
+        my-instance \
+        my-flavor \
+        2017-01-01 \
+        --image-meta '{"distro": "centos7", "type": "linux"}'
+
+    Success
+
+* :code:`tenant_id`: Tenant ID (UUID)
+* :code:`instance_id`: Instance ID (UUID)
+* :code:`start`: Start date (ISO8601 format)
+* :code:`name`: Instance name (string)
+* :code:`flavor`: Flavor (string)
+* :code:`image_meta`: Image metadata (dict as JSON string)
+
 Update Instance Entity
 ----------------------
 
@@ -91,6 +116,11 @@ Usage: :code:`almanach delete-instance <instance_id> --end <end>
     Success
 
 * :code:`end`: End date, if not specified the current date time is used (ISO8601 format)
+
+Arguments:
+
+* :code:`instance_id`: Instance ID (UUID)
+* :code:`end`: End date (ISO8601 format)
 
 List Volume Types
 -----------------

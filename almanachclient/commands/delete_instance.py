@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from cliff.command import Command
+from dateutil import parser as date_parser
 
 
 class DeleteInstanceCommand(Command):
@@ -25,5 +26,6 @@ class DeleteInstanceCommand(Command):
         return parser
 
     def take_action(self, parsed_args):
-        self.app.get_client().delete_instance(parsed_args.instance_id, parsed_args.end)
+        self.app.get_client().delete_instance(parsed_args.instance_id,
+                                              date_parser.parse(parsed_args.end) if parsed_args.end else None)
         return 'Success'

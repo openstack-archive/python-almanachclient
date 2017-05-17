@@ -153,3 +153,26 @@ class TestClient(base.TestCase):
                                          headers=self.headers,
                                          data=json.dumps({'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          params=None)
+
+    @mock.patch('requests.post')
+    def test_create_instance(self, requests):
+        self.response.text = ''
+        date = datetime.now()
+        payload = {
+            "flavor": "flavor",
+            "id": "instance_id",
+            "name": "name",
+            "created_at": date.strftime(Client.DATE_FORMAT_BODY),
+            "os_distro": None,
+            "os_type": None,
+            "os_version": None,
+        }
+
+        requests.return_value = self.response
+        self.response.status_code = 201
+
+        self.assertTrue(self.client.create_instance('tenant_id', 'instance_id', 'name', 'flavor', date))
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/tenant_id/instance'),
+                                         headers=self.headers,
+                                         data=json.dumps(payload),
+                                         params=None)
