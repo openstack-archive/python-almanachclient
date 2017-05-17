@@ -45,6 +45,11 @@ class Client(HttpClient):
         self._delete('{}/{}/volume_type/{}'.format(self.url, self.api_version, volume_type_id))
         return True
 
+    def get_instances(self, tenant_id, start, end):
+        url = '{}/{}/project/{}/instances'.format(self.url, self.api_version, tenant_id)
+        params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
+        return self._get(url, params)
+
     def create_instance(self, tenant_id, instance_id, name, flavor, start, image_meta=None):
         url = '{}/{}/project/{}/instance'.format(self.url, self.api_version, tenant_id)
         image_meta = image_meta or {}

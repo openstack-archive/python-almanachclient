@@ -176,3 +176,21 @@ class TestClient(base.TestCase):
                                          headers=self.headers,
                                          data=json.dumps(payload),
                                          params=None)
+
+    @mock.patch('requests.get')
+    def test_get_instances(self, requests):
+        expected = [mock.Mock()]
+
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
+
+        start = datetime.now()
+        end = datetime.now()
+        params = dict(start=start.strftime(Client.DATE_FORMAT_QS), end=end.strftime(Client.DATE_FORMAT_QS))
+
+        self.assertEqual(expected, self.client.get_instances('my_tenant_id', start, end))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/my_tenant_id/instances'),
+                                         params=params,
+                                         headers=self.headers)
