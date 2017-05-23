@@ -74,6 +74,10 @@ class Client(HttpClient):
         self._delete('{}/{}/instance/{}'.format(self.url, self.api_version, instance_id), data=data)
         return True
 
+    def get_entity(self, entity_id):
+        url = '{}/{}/entity/{}'.format(self.url, self.api_version, entity_id)
+        return self._get(url)
+
     def get_tenant_entities(self, tenant_id, start, end):
         url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}

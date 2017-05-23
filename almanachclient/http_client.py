@@ -58,12 +58,25 @@ class HttpClient(metaclass=abc.ABCMeta):
         return self._parse_response(response, 202)
 
     def _parse_response(self, response, expected_status=200):
-        body = response.json() if len(response.text) > 0 else ''
-
         if response.status_code != expected_status:
-            raise exceptions.HTTPError('{} ({})'.format(body.get('error') or 'HTTP Error', response.status_code))
+            raise exceptions.HTTPError('{} ({})'.format(self._get_error_message(response), response.status_code))
 
-        return body
+        return self._get_body(response)
+
+    def _get_body(self, response):
+        if self._is_json_response(response) and self._has_content(response):
+            return response.json()
+        return ''
+
+    def _get_error_message(self, response, default_message='HTTP Error'):
+        body = self._get_body(response)
+        return body.get('error', default_message) if isinstance(body, dict) else response.text
+
+    def _is_json_response(self, response):
+        return 'Content-Type' in response.headers and 'application/json' in response.headers['Content-Type']
+
+    def _has_content(self, response):
+        return 'Content-Length' in response.headers and int(response.headers['Content-Length']) > 0
 
     def _get_headers(self):
         return {

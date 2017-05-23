@@ -57,6 +57,24 @@ Arguments:
 * :code:`start`: Start date (ISO8601 format)
 * :code:`end`: End date (ISO8601 format)
 
+Get one Entity
+--------------
+
+Usage: :code:`almanach get-entity <entity_id>`
+
+.. code:: bash
+
+    almanach get-entity 3e3b22e6-a10c-4c00-b8e5-05fcc8422b11
+
+    +----------------------------------+--------+------+---------------------------+------+-------------------------------------------------------------+
+    | Tenant ID                        | Type   | Name | Start                     | End  | Properties                                                  |
+    +----------------------------------+--------+------+---------------------------+------+-------------------------------------------------------------+
+    | bca89ae64dba46b8b74653d8d9ae8364 | volume | vol1 | 2017-05-15 19:11:14+00:00 | None | {'size': 1, 'attached_to': [], 'volume_type': 'solidfire0'} |
+    +----------------------------------+--------+------+---------------------------+------+-------------------------------------------------------------+
+
+Arguments:
+
+* :code:`entity_id`: Entity ID (UUID)
 
 List Instances Entities
 -----------------------
