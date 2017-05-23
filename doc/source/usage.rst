@@ -170,6 +170,23 @@ Arguments:
 * :code:`instance_id`: Instance ID (UUID)
 * :code:`end`: End date (ISO8601 format)
 
+Resize Instance
+---------------
+
+Usage: :code:`almanach resize-instance <instance_id> <flavor> --date <resize_date>
+
+.. code:: bash
+
+    almanach resize-instance 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d New_Flavor
+
+    Success
+
+Arguments:
+
+* :code:`instance_id`: Instance ID (UUID)
+* :code:`flavor`: Flavor (string)
+* :code:`date`: Resize date (ISO8601 format), if not specified the current datetime is used
+
 List Volumes
 ------------
 
