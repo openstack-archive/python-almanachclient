@@ -10,6 +10,7 @@ Environment variables
 * :code:`OS_PASSWORD`: OpenStack password
 * :code:`ALMANACH_SERVICE`: Almanach catalog service name
 * :code:`ALMANACH_TOKEN`: Almanach API key
+* :code:`ALMANACH_URL`: Almanach API base URL, override Keystone catalog lookup if specified
 
 Get server version
 ------------------

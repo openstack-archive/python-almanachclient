@@ -92,16 +92,26 @@ class AlmanachApp(app.App):
         parser.add_argument('--almanach-token',
                             default=os.environ.get('ALMANACH_TOKEN'),
                             help='Almanach API token (Env: ALMANACH_TOKEN).')
+
+        parser.add_argument('--almanach-url',
+                            default=os.environ.get('ALMANACH_URL'),
+                            help='Almanach API base URL (Env: ALMANACH_URL).')
         return parser
 
     def get_client(self):
+        return Client(self.get_almanach_url(), token=self.options.almanach_token)
+
+    def get_almanach_url(self):
+        if self.options.almanach_url:
+            return self.options.almanach_url
+
         keystone = KeystoneClient(auth_url=self.options.os_auth_url,
                                   username=self.options.os_username,
                                   password=self.options.os_password,
                                   service=self.options.almanach_service,
                                   region_name=self.options.os_region_name)
 
-        return Client(keystone.get_endpoint_url(), token=self.options.almanach_token)
+        return keystone.get_endpoint_url()
 
 
 def main(argv=sys.argv[1:]):
