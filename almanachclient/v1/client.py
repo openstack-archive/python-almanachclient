@@ -89,6 +89,15 @@ class Client(HttpClient):
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
         return self._get(url, params)
 
+    def resize_volume(self, volume_id, size, date=None):
+        data = {
+            'size': size,
+            'date': self._format_body_datetime(date or datetime.now()),
+        }
+
+        self._put('{}/{}/volume/{}/resize'.format(self.url, self.api_version, volume_id), data=data)
+        return True
+
     def get_instances(self, tenant_id, start, end):
         """List instances for a tenant.
 

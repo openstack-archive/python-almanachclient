@@ -30,6 +30,7 @@ from almanachclient.commands.list_instance import ListInstanceCommand
 from almanachclient.commands.list_volume_type import ListVolumeTypeCommand
 from almanachclient.commands.list_volumes import ListVolumeCommand
 from almanachclient.commands.resize_instance import ResizeInstanceCommand
+from almanachclient.commands.resize_volume import ResizeVolumeCommand
 from almanachclient.commands.update_instance_entity import UpdateInstanceEntityCommand
 from almanachclient.commands.version import VersionCommand
 from almanachclient.keystone_client import KeystoneClient
@@ -46,6 +47,7 @@ class AlmanachCommandManager(commandmanager.CommandManager):
         'list-volume-types': ListVolumeTypeCommand,
         'get-volume-type': GetVolumeTypeCommand,
         'list-volumes': ListVolumeCommand,
+        'resize-volume': ResizeVolumeCommand,
         'list-instances': ListInstanceCommand,
         'create-instance': CreateInstanceCommand,
         'delete-instance': DeleteInstanceCommand,

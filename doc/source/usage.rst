@@ -208,6 +208,23 @@ Arguments:
 * :code:`start`: Start date (ISO8601 format)
 * :code:`end`: End date (ISO8601 format)
 
+Resize Volume
+-------------
+
+Usage: :code:`almanach resize-volume <volume_id> <size> --date <resize_date>
+
+.. code:: bash
+
+    almanach resize-volume 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d 2
+
+    Success
+
+Arguments:
+
+* :code:`volume_id`: Volume ID (UUID)
+* :code:`size`: Volume size (integer)
+* :code:`date`: Resize date (ISO8601 format), if not specified the current datetime is used
+
 List Volume Types
 -----------------
 

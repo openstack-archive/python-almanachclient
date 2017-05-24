@@ -234,3 +234,19 @@ class TestClient(base.TestCase):
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/my_tenant_id/volumes'),
                                          params=params,
                                          headers=self.headers)
+
+    @mock.patch('requests.put')
+    def test_resize_volume(self, requests):
+        date = datetime.now()
+        requests.return_value = self.response
+
+        self.response.headers['Content-Length'] = 0
+        self.response.status_code = 200
+
+        self.assertTrue(self.client.resize_volume('my_volume_id', 3, date))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/my_volume_id/resize'),
+                                         params=None,
+                                         data=json.dumps({'size': 3,
+                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         headers=self.headers)
