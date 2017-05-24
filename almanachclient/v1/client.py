@@ -142,6 +142,15 @@ class Client(HttpClient):
         self._delete('{}/{}/instance/{}'.format(self.url, self.api_version, instance_id), data=data)
         return True
 
+    def resize_instance(self, instance_id, flavor, date=None):
+        data = {
+            'flavor': flavor,
+            'date': self._format_body_datetime(date or datetime.now()),
+        }
+
+        self._put('{}/{}/instance/{}/resize'.format(self.url, self.api_version, instance_id), data=data)
+        return True
+
     def get_entity(self, entity_id):
         url = '{}/{}/entity/{}'.format(self.url, self.api_version, entity_id)
         return self._get(url)

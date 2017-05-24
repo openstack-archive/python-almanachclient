@@ -104,6 +104,22 @@ class TestClient(base.TestCase):
                                          data=json.dumps({'name': 'some entity'}),
                                          headers=self.headers)
 
+    @mock.patch('requests.put')
+    def test_resize_instance(self, requests):
+        date = datetime.now()
+        requests.return_value = self.response
+
+        self.response.headers['Content-Length'] = 0
+        self.response.status_code = 200
+
+        self.assertTrue(self.client.resize_instance('my_instance_id', 'another flavor', date))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/instance/my_instance_id/resize'),
+                                         params=None,
+                                         data=json.dumps({'flavor': 'another flavor',
+                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         headers=self.headers)
+
     @mock.patch('requests.get')
     def test_get_volume_types(self, requests):
         expected = [{'volume_type_id': 'some uuid', 'volume_type_name': 'some volume'}]
