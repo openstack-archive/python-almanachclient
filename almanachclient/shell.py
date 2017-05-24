@@ -23,6 +23,7 @@ from almanachclient.commands.create_volume_type import CreateVolumeTypeCommand
 from almanachclient.commands.delete_instance import DeleteInstanceCommand
 from almanachclient.commands.delete_volume_type import DeleteVolumeTypeCommand
 from almanachclient.commands.endpoint import EndpointCommand
+from almanachclient.commands.get_entity import GetEntityCommand
 from almanachclient.commands.get_volume_type import GetVolumeTypeCommand
 from almanachclient.commands.list_entity import ListEntityCommand
 from almanachclient.commands.list_instance import ListInstanceCommand
@@ -47,6 +48,7 @@ class AlmanachCommandManager(commandmanager.CommandManager):
         'list-instances': ListInstanceCommand,
         'create-instance': CreateInstanceCommand,
         'delete-instance': DeleteInstanceCommand,
+        'get-entity': GetEntityCommand,
         'list-entities': ListEntityCommand,
         'update instance': UpdateInstanceEntityCommand,
     }

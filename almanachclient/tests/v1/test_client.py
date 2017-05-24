@@ -25,7 +25,8 @@ class TestClient(base.TestCase):
 
     def setUp(self):
         super().setUp()
-        self.response = mock.Mock(text='sample data')
+        self.response = mock.Mock(headers={'Content-Type': 'application/json; charset=utf-8',
+                                           'Content-Length': '1'})
         self.url = 'http://almanach_url'
         self.token = 'token'
         self.headers = {'Content-Type': 'application/json',
@@ -74,6 +75,20 @@ class TestClient(base.TestCase):
                                          params=params,
                                          headers=self.headers)
 
+    @mock.patch('requests.get')
+    def test_get_entity(self, requests):
+        expected = [mock.Mock()]
+
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
+
+        self.assertEqual(expected, self.client.get_entity('entity_id'))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/entity/entity_id'),
+                                         params=None,
+                                         headers=self.headers)
+
     @mock.patch('requests.put')
     def test_update_instance_entity(self, requests):
         expected = dict(name='some entity')
@@ -116,7 +131,7 @@ class TestClient(base.TestCase):
     @mock.patch('requests.post')
     def test_create_volume_type(self, requests):
         data = {'type_id': 'some uuid', 'type_name': 'some name'}
-        self.response.text = ''
+        self.response.headers['Content-Length'] = 0
 
         requests.return_value = self.response
         self.response.status_code = 201
@@ -129,7 +144,7 @@ class TestClient(base.TestCase):
 
     @mock.patch('requests.delete')
     def test_delete_volume_type(self, requests):
-        self.response.text = ''
+        self.response.headers['Content-Length'] = 0
 
         requests.return_value = self.response
         self.response.status_code = 202
@@ -142,7 +157,7 @@ class TestClient(base.TestCase):
 
     @mock.patch('requests.delete')
     def test_delete_instance(self, requests):
-        self.response.text = ''
+        self.response.headers['Content-Length'] = 0
         date = datetime.now()
 
         requests.return_value = self.response
@@ -156,7 +171,7 @@ class TestClient(base.TestCase):
 
     @mock.patch('requests.post')
     def test_create_instance(self, requests):
-        self.response.text = ''
+        self.response.headers['Content-Length'] = 0
         date = datetime.now()
 
         requests.return_value = self.response
