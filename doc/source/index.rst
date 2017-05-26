@@ -8,5 +8,6 @@ Contents:
 
    readme
    installation
-   usage
+   usage_cli
+   usage_api
    contributing
