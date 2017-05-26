@@ -155,7 +155,7 @@ Arguments:
 Delete Instance
 ---------------
 
-Usage: :code:`almanach delete-instance <instance_id> --end <end>
+Usage: :code:`almanach delete-instance <instance_id> --end <end>`
 
 .. code:: bash
 
@@ -173,7 +173,7 @@ Arguments:
 Resize Instance
 ---------------
 
-Usage: :code:`almanach resize-instance <instance_id> <flavor> --date <resize_date>
+Usage: :code:`almanach resize-instance <instance_id> <flavor> --date <resize_date>`
 
 .. code:: bash
 
@@ -211,7 +211,7 @@ Arguments:
 Resize Volume
 -------------
 
-Usage: :code:`almanach resize-volume <volume_id> <size> --date <resize_date>
+Usage: :code:`almanach resize-volume <volume_id> <size> --date <resize_date>`
 
 .. code:: bash
 
