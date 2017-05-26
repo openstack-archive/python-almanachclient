@@ -31,6 +31,12 @@ class KeystoneClient(object):
         self.user_domain_id = user_domain_id
 
     def get_endpoint_url(self, visibility='admin'):
+        """Get Almanach API URL from Keystone catalog
+
+        :arg str visibility: Service visibility
+        :return: Almanach Endpoint URL
+        :rtype: str
+        """
         keystone = self._get_keystone_client()
         endpoints = keystone.endpoints.list(service=self.service, region=self.region_name)
 

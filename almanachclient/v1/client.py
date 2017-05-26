@@ -29,35 +29,33 @@ class Client(HttpClient):
     def get_info(self):
         """Display information about the current version and counts of entities in the database.
 
-        @:returns dict
+        :rtype: dict
         """
         return self._get('{}/{}/info'.format(self.url, self.api_version))
 
     def get_volume_types(self):
         """List volume types.
 
-        @:returns dict
+        :rtype: list
         """
         return self._get('{}/{}/volume_types'.format(self.url, self.api_version))
 
     def get_volume_type(self, volume_type_id):
         """Get a volume type.
 
-        :arg str volume_type_id: Volume Type Uuid
-
-        :raises ClientError
-        @:returns dict
+        :arg str volume_type_id: Volume Type UUID
+        :raises: ClientError
+        :rtype: dict
         """
         return self._get('{}/{}/volume_type/{}'.format(self.url, self.api_version, volume_type_id))
 
     def create_volume_type(self, volume_type_id, volume_type_name):
         """Create a volume type.
 
-        :arg str volume_type_id: The Volume Type id
+        :arg str volume_type_id: The Volume Type ID
         :arg str volume_type_name: The Volume Type name
-
-        :raises ClientError
-        @:returns bool
+        :raises: ClientError
+        :rtype: bool
         """
         url = '{}/{}/volume_type'.format(self.url, self.api_version)
         data = {'type_id': volume_type_id, 'type_name': volume_type_name}
@@ -67,10 +65,9 @@ class Client(HttpClient):
     def delete_volume_type(self, volume_type_id):
         """Delete the volume type.
 
-        :arg str volume_type_id: Volume Type Uuid
-
-        :raises ClientError
-        @:returns bool
+        :arg str volume_type_id: Volume Type UUID
+        :raises: ClientError
+        :rtype: bool
         """
         self._delete('{}/{}/volume_type/{}'.format(self.url, self.api_version, volume_type_id))
         return True
@@ -78,21 +75,28 @@ class Client(HttpClient):
     def get_volumes(self, tenant_id, start, end):
         """List volumes for a tenant.
 
-        :arg str tenant_id: The Tenant Uuid
-        :arg DateTime start
-        :arg DateTime end
-
-        :raises ClientError
-        @:returns dict
+        :arg str tenant_id: The Tenant UUID
+        :arg datetime start: Start date
+        :arg datetime end: End date
+        :raises: ClientError
+        :rtype: list
         """
         url = '{}/{}/project/{}/volumes'.format(self.url, self.api_version, tenant_id)
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
         return self._get(url, params)
 
-    def resize_volume(self, volume_id, size, date=None):
+    def resize_volume(self, volume_id, size, resize_date=None):
+        """Resize a volume.
+
+        :arg str volume_id: Volume UUID
+        :arg int size: Volume size
+        :arg datetime resize_date: Resize date
+        :raises: ClientError
+        :rtype: bool
+        """
         data = {
             'size': size,
-            'date': self._format_body_datetime(date or datetime.now()),
+            'date': self._format_body_datetime(resize_date or datetime.now()),
         }
 
         self._put('{}/{}/volume/{}/resize'.format(self.url, self.api_version, volume_id), data=data)
@@ -101,12 +105,11 @@ class Client(HttpClient):
     def get_instances(self, tenant_id, start, end):
         """List instances for a tenant.
 
-        :arg str tenant_id: The Tenant Uuid
-        :arg DateTime start
-        :arg DateTime end
-
-        :raises ClientError
-        @:returns dict
+        :arg str tenant_id: The Tenant UUID
+        :arg datetime start: Start date
+        :arg datetime end: End date
+        :raises: ClientError
+        :rtype: list
         """
         url = '{}/{}/project/{}/instances'.format(self.url, self.api_version, tenant_id)
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
@@ -115,15 +118,14 @@ class Client(HttpClient):
     def create_instance(self, tenant_id, instance_id, name, flavor, start, image_meta=None):
         """Create an instance for a tenant.
 
-        :arg str tenant_id: The Tenant Uuid
-        :arg str instance_id: The instance uuid
+        :arg str tenant_id: The Tenant UUID
+        :arg str instance_id: The instance UUID
         :arg str name: The instance name
-        :arg str flavor: The flavor uuid
-        :arg DateTime start
+        :arg str flavor: The flavor
+        :arg datetime start: Start date
         :arg dict image_meta: The OS type, distro and version of the image
-
-        :raises ClientError
-        @:returns bool
+        :raises: ClientError
+        :rtype: bool
         """
         url = '{}/{}/project/{}/instance'.format(self.url, self.api_version, tenant_id)
         image_meta = image_meta or {}
@@ -139,40 +141,52 @@ class Client(HttpClient):
         return True
 
     def delete_instance(self, instance_id, end=None):
-        """Delete the instance.
+        """Delete an instance.
 
-        :arg str instance_id: Instance Uuid
-        :arg DateTime end
-
-        :raises ClientError
-        @:returns bool
+        :arg str instance_id: Instance UUID
+        :arg datetime end: End date
+        :raises: ClientError
+        :rtype: bool
         """
         data = {'date': self._format_body_datetime(end or datetime.now())}
         self._delete('{}/{}/instance/{}'.format(self.url, self.api_version, instance_id), data=data)
         return True
 
-    def resize_instance(self, instance_id, flavor, date=None):
+    def resize_instance(self, instance_id, flavor, resize_date=None):
+        """Resize an instance.
+
+        :arg str instance_id: Instance UUID
+        :arg str flavor: Flavor
+        :arg datetime resize_date: Resize date
+        :raises: ClientError
+        :rtype: bool
+        """
         data = {
             'flavor': flavor,
-            'date': self._format_body_datetime(date or datetime.now()),
+            'date': self._format_body_datetime(resize_date or datetime.now()),
         }
 
         self._put('{}/{}/instance/{}/resize'.format(self.url, self.api_version, instance_id), data=data)
         return True
 
     def get_entity(self, entity_id):
+        """Get single entity.
+
+        :arg str entity_id: Entity UUID
+        :raises: ClientError
+        :rtype: list
+        """
         url = '{}/{}/entity/{}'.format(self.url, self.api_version, entity_id)
         return self._get(url)
 
     def get_tenant_entities(self, tenant_id, start, end):
         """List instances and volumes for a tenant.
 
-        :arg str tenant_id: Tenant Uuid
-        :arg DateTime start
-        :arg DateTime end
-
-        :raises ClientError
-        @:returns dict
+        :arg str tenant_id: Tenant UUID
+        :arg datetime start: Start date
+        :arg datetime end: End date
+        :raises: ClientError
+        :rtype: list
         """
         url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
@@ -181,14 +195,13 @@ class Client(HttpClient):
     def update_instance_entity(self, instance_id, **kwargs):
         """Update an instance entity.
 
-        :arg str instance_id: Instance Uuid
-        :arg DateTime start
-        :arg DateTime end
-        :arg str flavor: The flavor uuid
+        :arg str instance_id: Instance UUID
+        :arg datetime start: Start date
+        :arg datetime end: End date
+        :arg str flavor: The flavor
         :arg str name: The instance name
-
-        :raises ClientError
-        @:returns dict
+        :raises: ClientError
+        :rtype: dict
         """
         url = '{}/{}/entity/instance/{}'.format(self.url, self.api_version, instance_id)
 

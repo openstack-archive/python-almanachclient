@@ -1,8 +1,10 @@
-The :mod:`almanachclient` Python API
-====================================
+Almanach Python API
+===================
 
 .. module:: almanachclient
-:synopsis: A python client for the Almanach API.
+    :synopsis: A python client for the Almanach API.
+
+.. currentmodule:: almanachclient
 
 Usage
 -----
@@ -49,3 +51,14 @@ Examples
 
 >>> almanach.delete_instance('f1c2db7b-946e-47a4-b443-914a669a3333')
 >>> almanach.update_instance_entity(instance_id='f1c2db7b-946e-47a4-b443-914a669a2222', start=start_date, end=end_date)
+
+
+Reference
+---------
+
+For more information, see the reference:
+
+.. toctree::
+    :maxdepth: 2
+
+    api/autoindex
