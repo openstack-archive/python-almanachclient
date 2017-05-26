@@ -1,0 +1,8 @@
+Code-Review+2: Frédéric Guillot <fguillot@internap.com>
+Workflow+1: Frédéric Guillot <fguillot@internap.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 26 May 2017 21:05:26 +0000
+Reviewed-on: https://review.openstack.org/468541
+Project: openstack/python-almanachclient
+Branch: refs/heads/master
