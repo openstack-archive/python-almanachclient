@@ -8,5 +8,6 @@ Contents:
 
    readme
    installation
+   python_api
    usage
    contributing
