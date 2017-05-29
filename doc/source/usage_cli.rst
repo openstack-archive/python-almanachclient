@@ -12,8 +12,8 @@ Environment variables
 * :code:`ALMANACH_TOKEN`: Almanach API token, if empty a token will be fetched from Keystone
 * :code:`ALMANACH_URL`: Almanach API base URL, if empty the endpoint will be fetched from Keystone catalog
 
-Command Line Arguments
-----------------------
+Optional Arguments
+------------------
 
 * :code:`--os-auth-url`: Keystone URL (v3 endpoint)
 * :code:`--os-region-name`: OpenStack region name
@@ -174,12 +174,10 @@ Usage: :code:`almanach delete-instance <instance_id> --end <end>`
 
     Success
 
-* :code:`end`: End date, if not specified the current date time is used (ISO8601 format)
-
 Arguments:
 
 * :code:`instance_id`: Instance ID (UUID)
-* :code:`end`: End date (ISO8601 format)
+* :code:`end`: End date (ISO8601 format), if not specified the current date time is used
 
 Resize Instance
 ---------------
@@ -247,6 +245,21 @@ Arguments:
 * :code:`date`: Creation date (ISO8601 format), if not specified the current datetime is used
 * :code:`attachment`: Attach the volume to one or many instances (UUID)
 
+Delete Volume
+-------------
+
+Usage: :code:`almanach delete-volume <volume_id> --end <end>`
+
+.. code:: bash
+
+    almanach delete-volume 8c3bc3aa-28d6-4863-b5ae-72e1b415f79d
+
+    Success
+
+Arguments:
+
+* :code:`volume_id`: Instance ID (UUID)
+* :code:`end`: End date (ISO8601 format), if not specified the current date time is used
 
 Resize Volume
 -------------

@@ -305,3 +305,17 @@ class TestClient(base.TestCase):
                                          data=json.dumps({'attachments': ['instance_id'],
                                                           'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          headers=self.headers)
+
+    @mock.patch('requests.delete')
+    def test_delete_volume(self, requests):
+        self.response.headers['Content-Length'] = 0
+        date = datetime.now()
+
+        requests.return_value = self.response
+        self.response.status_code = 202
+
+        self.assertTrue(self.client.delete_volume('some uuid', date))
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/some uuid'),
+                                         headers=self.headers,
+                                         data=json.dumps({'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         params=None)

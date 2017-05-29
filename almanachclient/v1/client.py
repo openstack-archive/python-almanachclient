@@ -110,6 +110,21 @@ class Client(HttpClient):
         self._post('{}/{}/project/{}/volume'.format(self.url, self.api_version, tenant_id), data=data)
         return True
 
+    def delete_volume(self, volume_id, end=None):
+        """Remove a volume.
+
+        :arg str volume_id: Volume UUID
+        :arg datetime end: Suppression date
+        :raises: ClientError
+        :rtype: bool
+        """
+        data = {
+            'date': self._format_body_datetime(end or datetime.now()),
+        }
+
+        self._delete('{}/{}/volume/{}'.format(self.url, self.api_version, volume_id), data=data)
+        return True
+
     def resize_volume(self, volume_id, size, resize_date=None):
         """Resize a volume.
 
