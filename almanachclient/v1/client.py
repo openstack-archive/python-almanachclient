@@ -85,6 +85,31 @@ class Client(HttpClient):
         params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
         return self._get(url, params)
 
+    def create_volume(self, tenant_id, volume_id, volume_type_id, name, size, attachments=None, start=None):
+        """Create a volume.
+
+        :arg str tenant_id: Tenant UUID
+        :arg str volume_id: Volume UUID
+        :arg str volume_type_id: Volume type
+        :arg str name: Volume name
+        :arg int size: Volume size
+        :arg list attachments: List of instance attached to the volume
+        :arg datetime start: Creation date or now if None
+        :raises: ClientError
+        :rtype: bool
+        """
+        data = {
+            'volume_id': volume_id,
+            'volume_type': volume_type_id,
+            'volume_name': name,
+            'size': size,
+            'attached_to': attachments or [],
+            'start': self._format_body_datetime(start or datetime.now()),
+        }
+
+        self._post('{}/{}/project/{}/volume'.format(self.url, self.api_version, tenant_id), data=data)
+        return True
+
     def resize_volume(self, volume_id, size, resize_date=None):
         """Resize a volume.
 
@@ -100,6 +125,40 @@ class Client(HttpClient):
         }
 
         self._put('{}/{}/volume/{}/resize'.format(self.url, self.api_version, volume_id), data=data)
+        return True
+
+    def attach_volume(self, volume_id, attachments, attachment_date=None):
+        """Attach instances to a volume.
+
+        :arg str volume_id: Volume UUID
+        :arg list attachments: List of instance ID
+        :arg datetime attachment_date: Attachment date
+        :raises: ClientError
+        :rtype: bool
+        """
+        data = {
+            'attachments': attachments,
+            'date': self._format_body_datetime(attachment_date or datetime.now()),
+        }
+
+        self._put('{}/{}/volume/{}/attach'.format(self.url, self.api_version, volume_id), data=data)
+        return True
+
+    def detach_volume(self, volume_id, attachments, attachment_date=None):
+        """Detach instances from a volume.
+
+        :arg str volume_id: Volume UUID
+        :arg list attachments: List of instance ID
+        :arg datetime attachment_date: Attachment date
+        :raises: ClientError
+        :rtype: bool
+        """
+        data = {
+            'attachments': attachments,
+            'date': self._format_body_datetime(attachment_date or datetime.now()),
+        }
+
+        self._put('{}/{}/volume/{}/detach'.format(self.url, self.api_version, volume_id), data=data)
         return True
 
     def get_instances(self, tenant_id, start, end):

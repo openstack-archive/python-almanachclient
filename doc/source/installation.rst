@@ -2,7 +2,14 @@
 Installation
 ============
 
-The client requires at least the version 4.0.9 of Almanach.
+Requirements
+------------
+
+- Python >= 3.4
+- Almanach >= 4.0.9
+
+Instructions
+------------
 
 At the command line::
 

@@ -208,6 +208,35 @@ Arguments:
 * :code:`start`: Start date (ISO8601 format)
 * :code:`end`: End date (ISO8601 format)
 
+Create Volume
+-------------
+
+Usage: :code:`almanach create-volume <tenant_id> <volume_id> <volume_type_id> <volume_name> <size> --date <creation_date> --attachment <instance_id>`
+
+.. code:: bash
+
+    almanach create-volume \
+        8c3bc3aa-28d6-4863-b5ae-72e1b415f79d \
+        3e3b22e6-a10c-4c00-b8e5-05fcc8422b11 \
+        f3786e9f-f8e6-4944-a3bc-e11b9f112706 \
+        my-volume \
+        5 \
+        --attachment=86dd5189-d9d6-40f7-a319-19231fbd4e07 \
+        --attachment=252e49d8-abf2-486c-8478-b5f775134f54
+
+    Success
+
+Arguments:
+
+* :code:`tenant_id`: Tenant ID (UUID)
+* :code:`volume_id`: Volume ID (UUID)
+* :code:`volume_type_id`: Volume ID (UUID)
+* :code:`volume_name`: Volume name (string)
+* :code:`size`: Volume size (integer)
+* :code:`date`: Creation date (ISO8601 format), if not specified the current datetime is used
+* :code:`attachment`: Attach the volume to one or many instances (UUID)
+
+
 Resize Volume
 -------------
 
@@ -224,6 +253,45 @@ Arguments:
 * :code:`volume_id`: Volume ID (UUID)
 * :code:`size`: Volume size (integer)
 * :code:`date`: Resize date (ISO8601 format), if not specified the current datetime is used
+
+Attach Volume
+-------------
+
+Usage: :code:`almanach attach-volume <volume_id> --date <creation_date> --attachment <instance_id>`
+
+.. code:: bash
+
+    almanach attach-volume \
+        8c3bc3aa-28d6-4863-b5ae-72e1b415f79d \
+        --attachment=86dd5189-d9d6-40f7-a319-19231fbd4e07
+
+    Success
+
+Arguments:
+
+* :code:`volume_id`: Volume ID (UUID)
+* :code:`date`: Attachment date (ISO8601 format), if not specified the current datetime is used
+* :code:`attachment`: Attach the volume to one or many instances (UUID)
+
+
+Detach Volume
+-------------
+
+Usage: :code:`almanach detach-volume <volume_id> --date <creation_date> --attachment <instance_id>`
+
+.. code:: bash
+
+    almanach detach-volume \
+        8c3bc3aa-28d6-4863-b5ae-72e1b415f79d \
+        --attachment=86dd5189-d9d6-40f7-a319-19231fbd4e07
+
+    Success
+
+Arguments:
+
+* :code:`volume_id`: Volume ID (UUID)
+* :code:`date`: Attachment date (ISO8601 format), if not specified the current datetime is used
+* :code:`attachment`: Attach the volume to one or many instances (UUID)
 
 List Volume Types
 -----------------
