@@ -250,3 +250,58 @@ class TestClient(base.TestCase):
                                          data=json.dumps({'size': 3,
                                                           'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          headers=self.headers)
+
+    @mock.patch('requests.post')
+    def test_create_volume(self, requests):
+        date = datetime.now()
+        requests.return_value = self.response
+
+        self.response.headers['Content-Length'] = 0
+        self.response.status_code = 201
+
+        self.assertTrue(self.client.create_volume('tenant_id', 'my_volume_id', 'volume_type_id',
+                                                  'volume name', 2, start=date))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/tenant_id/volume'),
+                                         params=None,
+                                         data=json.dumps({
+                                             'volume_id': 'my_volume_id',
+                                             'volume_type': 'volume_type_id',
+                                             'volume_name': 'volume name',
+                                             'size': 2,
+                                             'attached_to': [],
+                                             'start': date.strftime(Client.DATE_FORMAT_BODY),
+                                         }),
+                                         headers=self.headers)
+
+    @mock.patch('requests.put')
+    def test_attach_volume(self, requests):
+        date = datetime.now()
+        requests.return_value = self.response
+
+        self.response.headers['Content-Length'] = 0
+        self.response.status_code = 200
+
+        self.assertTrue(self.client.attach_volume('my_volume_id', ['instance_id'], date))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/my_volume_id/attach'),
+                                         params=None,
+                                         data=json.dumps({'attachments': ['instance_id'],
+                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         headers=self.headers)
+
+    @mock.patch('requests.put')
+    def test_detach_volume(self, requests):
+        date = datetime.now()
+        requests.return_value = self.response
+
+        self.response.headers['Content-Length'] = 0
+        self.response.status_code = 200
+
+        self.assertTrue(self.client.detach_volume('my_volume_id', ['instance_id'], date))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/my_volume_id/detach'),
+                                         params=None,
+                                         data=json.dumps({'attachments': ['instance_id'],
+                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         headers=self.headers)
