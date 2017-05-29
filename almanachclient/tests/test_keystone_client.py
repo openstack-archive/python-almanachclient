@@ -30,6 +30,14 @@ class TestKeystoneClient(base.TestCase):
         self.region_name = 'some region'
         self.client = KeystoneClient(self.auth_url, self.username, self.password, self.service, self.region_name)
 
+    @mock.patch('keystoneauth1.session.Session')
+    def test_get_token(self, session):
+        sess = mock.Mock()
+        sess.get_token.return_value = 'some token'
+        session.return_value = sess
+        self.assertEqual('some token', self.client.get_token())
+        sess.get_token.assert_called_with()
+
     @mock.patch('keystoneclient.v3.client.Client')
     def test_get_endpoint_url(self, keystone):
         endpoint_manager = mock.Mock()

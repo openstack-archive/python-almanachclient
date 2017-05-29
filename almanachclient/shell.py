@@ -105,19 +105,20 @@ class AlmanachApp(app.App):
         return parser
 
     def get_client(self):
-        return Client(self.get_almanach_url(), token=self.options.almanach_token)
+        return Client(self._get_almanach_url(), self._get_almanach_token())
 
-    def get_almanach_url(self):
-        if self.options.almanach_url:
-            return self.options.almanach_url
+    def _get_almanach_token(self):
+        return self.options.almanach_token or self._get_keystone_client().get_token()
 
-        keystone = KeystoneClient(auth_url=self.options.os_auth_url,
-                                  username=self.options.os_username,
-                                  password=self.options.os_password,
-                                  service=self.options.almanach_service,
-                                  region_name=self.options.os_region_name)
+    def _get_almanach_url(self):
+        return self.options.almanach_url or self._get_keystone_client().get_endpoint_url()
 
-        return keystone.get_endpoint_url()
+    def _get_keystone_client(self):
+        return KeystoneClient(auth_url=self.options.os_auth_url,
+                              username=self.options.os_username,
+                              password=self.options.os_password,
+                              service=self.options.almanach_service,
+                              region_name=self.options.os_region_name)
 
 
 def main(argv=sys.argv[1:]):

@@ -5,12 +5,23 @@ Environment variables
 ---------------------
 
 * :code:`OS_AUTH_URL`: Keystone URL (v3 endpoint)
-* :code:`OS_AUTH_URL`: OpenStack region name
+* :code:`OS_REGION_NAME`: OpenStack region name
 * :code:`OS_USERNAME`: OpenStack username
 * :code:`OS_PASSWORD`: OpenStack password
-* :code:`ALMANACH_SERVICE`: Almanach catalog service name
-* :code:`ALMANACH_TOKEN`: Almanach API key
-* :code:`ALMANACH_URL`: Almanach API base URL, override Keystone catalog lookup if specified
+* :code:`ALMANACH_SERVICE`: Almanach Keystone catalog service name
+* :code:`ALMANACH_TOKEN`: Almanach API token, if empty a token will be fetched from Keystone
+* :code:`ALMANACH_URL`: Almanach API base URL, if empty the endpoint will be fetched from Keystone catalog
+
+Command Line Arguments
+----------------------
+
+* :code:`--os-auth-url`: Keystone URL (v3 endpoint)
+* :code:`--os-region-name`: OpenStack region name
+* :code:`--os-username`: OpenStack username
+* :code:`--os-password`: OpenStack password
+* :code:`--almanach-service`: Almanach Keystone catalog service name
+* :code:`--almanach-token`: Almanach API token, if empty a token will be fetched from Keystone
+* :code:`--almanach-url`: Almanach API base URL, if empty the endpoint will be fetched from Keystone catalog
 
 Get server version
 ------------------
