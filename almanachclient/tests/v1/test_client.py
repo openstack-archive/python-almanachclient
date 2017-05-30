@@ -19,6 +19,7 @@ from unittest import mock
 from almanachclient import exceptions
 from almanachclient.tests import base
 from almanachclient.v1.client import Client
+from almanachclient import version
 
 
 class TestClient(base.TestCase):
@@ -30,7 +31,7 @@ class TestClient(base.TestCase):
         self.url = 'http://almanach_url'
         self.token = 'token'
         self.headers = {'Content-Type': 'application/json',
-                        'User-Agent': 'python-almanachclient/0.0.1',
+                        'User-Agent': 'python-almanachclient/{}'.format(version.__version__),
                         'X-Auth-Token': self.token,
                         'Accept': 'application/json'}
 
