@@ -270,8 +270,8 @@ class Client(HttpClient):
         """Update an instance entity.
 
         :arg str instance_id: Instance UUID
-        :arg datetime start: Start date
-        :arg datetime end: End date
+        :arg datetime start_date: Start date
+        :arg datetime end_date: End date
         :arg str flavor: The flavor
         :arg str name: The instance name
         :raises: ClientError
@@ -279,7 +279,7 @@ class Client(HttpClient):
         """
         url = '{}/{}/entity/instance/{}'.format(self.url, self.api_version, instance_id)
 
-        for param in ['start', 'end']:
+        for param in ['start_date', 'end_date']:
             if param in kwargs:
                 kwargs[param] = self._format_body_datetime(kwargs[param])
 

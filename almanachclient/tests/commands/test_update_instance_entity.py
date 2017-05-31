@@ -52,4 +52,4 @@ class TestUpdateInstanceEntityCommand(base.TestCase):
         self.assertEqual(expected, self.command.take_action(self.args))
 
         self.client.update_instance_entity.assert_called_once_with(self.args.instance_id,
-                                                                   start=datetime.datetime(2017, 1, 1, 0, 0))
+                                                                   start_date=datetime.datetime(2017, 1, 1, 0, 0))

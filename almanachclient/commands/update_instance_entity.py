@@ -39,10 +39,10 @@ class UpdateInstanceEntityCommand(ShowOne):
         params = dict()
 
         if parsed_args.start:
-            params['start'] = parser.parse(parsed_args.start)
+            params['start_date'] = parser.parse(parsed_args.start)
 
         if parsed_args.end:
-            params['end'] = parser.parse(parsed_args.end)
+            params['end_date'] = parser.parse(parsed_args.end)
 
         if parsed_args.flavor:
             params['flavor'] = parsed_args.flavor
