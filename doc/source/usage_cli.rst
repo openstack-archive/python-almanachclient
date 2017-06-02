@@ -52,7 +52,7 @@ Usage: :code:`almanach list-entities <tenant_id> <start> --end <end>`
 
 .. code:: bash
 
-    almanach list-entities bca89ae64dba46b8b74653d8d9ae8364 2016-01-01 2017-05-30
+    almanach list-entities bca89ae64dba46b8b74653d8d9ae8364 2016-01-01 --end 2017-05-30
 
     +--------------------------------------+----------+--------+---------------------------+------+---------------------------------------------------------------------------------------+
     | Entity ID                            | Type     | Name   | Start                     | End  | Properties                                                                            |

@@ -15,14 +15,14 @@ First, create an Almanach Client instance with your credentials::
     >>> almanach = Client(ALMANACH_URL, AUTH_TOKEN)
 
 Here ``ALMANACH_URL`` will be a string that represents the url of Almanach API.
-``AUTH_TOKEN`` will be the authorization token you use to acces the API.
+``AUTH_TOKEN`` will be the authorization token you use to access the API.
 
 
-You can also create a Keystone Client instance and access the API with it::
+You can also create a Keystone Client instance to fetch Almanach API endpoint::
 
     >>> from almanachclient.keystone_client import KeystoneClient
     >>> keystone_client = KeystoneClient(KEYSTONE_URL, USERNAME, PASSWORD, SERVICE, REGION)
-    >>> almanach_url = keystone_client.get_endpoint_url('admin')
+    >>> almanach_url = keystone_client.get_endpoint_url()
 
 In this case ``KEYSTONE_URL`` will be a string that represents the url of your keystone catalog.
 The nature of ``USERNAME`` and ``PASSWORD`` speak for themselves. ``SERVICE`` will be a string
