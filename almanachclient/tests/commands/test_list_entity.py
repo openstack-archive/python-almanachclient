@@ -47,3 +47,17 @@ class TestListEntityCommand(base.TestCase):
         self.client.get_tenant_entities.assert_called_once_with(self.args.tenant_id,
                                                                 datetime.datetime(2017, 1, 1, 0, 0),
                                                                 datetime.datetime(2017, 1, 30, 0, 0))
+
+    def test_execute_command_without_end_date(self):
+        self.args.tenant_id = 'some uuid'
+        self.args.start = '2017-01-01'
+        self.client.get_tenant_entities.return_value = [{'entity_id': 'some uuid', 'project_id': 'tenant id'}]
+
+        expected = (('Entity ID', 'Type', 'Name', 'Start', 'End', 'Properties'),
+                    [('some uuid', None, None, None, None, None)])
+
+        self.assertEqual(expected, self.command.take_action(self.args))
+
+        self.client.get_tenant_entities.assert_called_once_with(self.args.tenant_id,
+                                                                datetime.datetime(2017, 1, 1, 0, 0),
+                                                                None)

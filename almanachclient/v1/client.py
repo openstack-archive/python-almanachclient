@@ -253,7 +253,7 @@ class Client(HttpClient):
         url = '{}/{}/entity/{}'.format(self.url, self.api_version, entity_id)
         return self._get(url)
 
-    def get_tenant_entities(self, tenant_id, start, end):
+    def get_tenant_entities(self, tenant_id, start, end=None):
         """List instances and volumes for a tenant.
 
         :arg str tenant_id: Tenant UUID
@@ -263,7 +263,11 @@ class Client(HttpClient):
         :rtype: list
         """
         url = '{}/{}/project/{}/entities'.format(self.url, self.api_version, tenant_id)
-        params = {'start': self._format_qs_datetime(start), 'end': self._format_qs_datetime(end)}
+        params = {'start': self._format_qs_datetime(start)}
+
+        if end:
+            params['end'] = self._format_qs_datetime(end)
+
         return self._get(url, params)
 
     def update_instance_entity(self, instance_id, **kwargs):

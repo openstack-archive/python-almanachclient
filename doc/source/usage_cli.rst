@@ -48,7 +48,7 @@ Usage: :code:`almanach endpoint`
 Get Tenant Entities
 -------------------
 
-Usage: :code:`almanach list-entities <tenant_id> <start> <end>`
+Usage: :code:`almanach list-entities <tenant_id> <start> --end <end>`
 
 .. code:: bash
 
@@ -66,7 +66,7 @@ Arguments:
 
 * :code:`tenant_id`: Tenant ID (UUID)
 * :code:`start`: Start date (ISO8601 format)
-* :code:`end`: End date (ISO8601 format)
+* :code:`end`: End date (ISO8601 format), optional
 
 Get one Entity
 --------------

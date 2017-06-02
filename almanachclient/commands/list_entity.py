@@ -25,12 +25,12 @@ class ListEntityCommand(Lister):
         parser = super().get_parser(prog_name)
         parser.add_argument('tenant_id', help='Tenant ID')
         parser.add_argument('start', help='Start Date')
-        parser.add_argument('end', help='End Date')
+        parser.add_argument('--end', help='End Date')
         return parser
 
     def take_action(self, parsed_args):
         start = parser.parse(parsed_args.start)
-        end = parser.parse(parsed_args.end)
+        end = parser.parse(parsed_args.end) if parsed_args.end else None
         entities = self.app.get_client().get_tenant_entities(parsed_args.tenant_id, start, end)
         return self.columns, self._format_rows(entities)
 

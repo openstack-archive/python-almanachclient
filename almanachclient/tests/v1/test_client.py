@@ -77,6 +77,23 @@ class TestClient(base.TestCase):
                                          headers=self.headers)
 
     @mock.patch('requests.get')
+    def test_get_tenant_entities_without_end_date(self, requests):
+        expected = [mock.Mock()]
+
+        requests.return_value = self.response
+        self.response.json.return_value = expected
+        self.response.status_code = 200
+
+        start = datetime.now()
+        params = dict(start=start.strftime(Client.DATE_FORMAT_QS))
+
+        self.assertEqual(expected, self.client.get_tenant_entities('my_tenant_id', start))
+
+        requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/my_tenant_id/entities'),
+                                         params=params,
+                                         headers=self.headers)
+
+    @mock.patch('requests.get')
     def test_get_entity(self, requests):
         expected = [mock.Mock()]
 
