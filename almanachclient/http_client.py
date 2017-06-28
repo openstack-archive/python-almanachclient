@@ -26,8 +26,25 @@ logger = logging.getLogger(__name__)
 
 class HttpClient(metaclass=abc.ABCMeta):
 
-    def __init__(self, url, token=None):
-        self.url = url
+    def __init__(self, endpoint=None, token=None,
+                 session=None, region_name=None,
+                 service_type='cloudmetrics', endpoint_type=None):
+        """Initialization of Client object.
+
+        :param string endpoint: The url of the Almanach service. Overrides the session url.
+        :param string token: The Almanach X-Auth-Token.
+        :param session: A session object that can be used for communication.
+        :type session: keystonauth.session.Session
+        :param string region_name:
+        :param string service_type:
+        :param string endpoint_type:
+        """
+        self.url = ''
+        if session:
+            self.url = session.get_endpoint(service_type=service_type, region_name=region_name, interface=endpoint_type)
+        if endpoint:
+            self.url = endpoint
+
         self.token = token
 
     def _get(self, url, params=None):

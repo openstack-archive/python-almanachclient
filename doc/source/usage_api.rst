@@ -9,10 +9,22 @@ Almanach Python API
 Usage
 -----
 
-First, create an Almanach Client instance with your credentials::
+First, create an Almanach Client instance by providing a Keystone session and your AUTH_TOKEN::
 
+    >>> from keystoneauth1 import loading
+    >>> from keystoneauth1 import session
     >>> from almanachclient.v1.client import Client
-    >>> almanach = Client(ALMANACH_URL, AUTH_TOKEN)
+
+    >>> loader = loading.get_plugin_loader('password')
+    >>> auth = loader.load_from_options(auth_url=AUTH_URL,
+    ...                                 username=USERNAME,
+    ...                                 password=PASSWORD,
+    ...                                 project_name=PROJECT_NAME,
+    ...                                 project_domain_name="Default",
+    ...                                 user_domain_name="Default")
+    >>> sess = session.Session(auth=auth)
+
+    >>> almanach = Client(session=sess, token=AUTH_TOKEN)
 
 Here ``ALMANACH_URL`` will be a string that represents the url of Almanach API.
 ``AUTH_TOKEN`` will be the authorization token you use to access the API.
