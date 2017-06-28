@@ -37,6 +37,26 @@ class TestClient(base.TestCase):
 
         self.client = Client(self.url, self.token)
 
+        self.session = mock.Mock()
+        self.session.get_endpoint.return_value = 'http://almanach_url/from/session'
+
+    def test_instantiate_client_with_a_session(self):
+        client = Client(session=self.session)
+
+        self.assertEqual('http://almanach_url/from/session', client.get_url())
+
+        self.session.get_endpoint.called_once_with(service_type='cloudmetrics', region_name=None, interface=None)
+
+    def test_instantiate_client_endpoint_url_override_session_url(self):
+        client = Client(url='http://almanach_url', session=self.session)
+
+        self.assertEqual('http://almanach_url', client.get_url())
+
+        self.session.get_endpoint.called_once_with(service_type='cloudmetrics', region_name=None, interface=None)
+
+    def test_instantiate_client_no_url_and_no_session(self):
+        self.assertRaises(ValueError, Client)
+
     @mock.patch('requests.get')
     def test_get_info(self, requests):
         expected = {
