@@ -37,6 +37,31 @@ class TestClient(base.TestCase):
 
         self.client = Client(self.url, self.token)
 
+    def test_instantiate_client_with_a_session(self):
+        session = mock.Mock()
+        session.get_endpoint.return_value = 'http://almanach_url/from/session'
+
+        client = Client(token='token', session=session, region_name='region name', service_type='service type')
+
+        self.assertEqual('http://almanach_url/from/session', client.url)
+
+        session.get_endpoint.called_once_with(service_type='service type', region_name='region name')
+
+    def test_instantiate_client__without_a_url_or_a_session(self):
+        self.assertRaises(ValueError, Client)
+
+    def test_instantiate_client_with_missing_get_endpoint_related_param(self):
+        session = mock.Mock()
+
+        self.assertRaises(
+            ValueError,
+            Client,
+            url=self.url,
+            token='token',
+            session=session,
+            service_type='service type',
+        )
+
     @mock.patch('requests.get')
     def test_get_info(self, requests):
         expected = {

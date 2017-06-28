@@ -26,8 +26,17 @@ logger = logging.getLogger(__name__)
 
 class HttpClient(metaclass=abc.ABCMeta):
 
-    def __init__(self, url, token=None):
-        self.url = url
+    def __init__(self, url='', token=None, session=None, region_name='', service_type=''):
+        if session:
+            if not region_name or not service_type:
+                raise ValueError('region_name and service_type cannot be empty when a session is provided.')
+            self.url = session.get_endpoint(service_type=service_type, region_name=region_name)
+        else:
+            if not url:
+                raise ValueError('Missing almanach service url.')
+            logger.warning('Providing the Almanach url is deprecated, using a session is the preferred way.')
+            self.url = url
+
         self.token = token
 
     def _get(self, url, params=None):
