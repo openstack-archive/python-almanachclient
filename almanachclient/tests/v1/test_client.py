@@ -13,8 +13,9 @@
 # limitations under the License.
 
 from datetime import datetime
-import json
 from unittest import mock
+
+from oslo_serialization import jsonutils
 
 from almanachclient import exceptions
 from almanachclient.tests import base
@@ -139,7 +140,7 @@ class TestClient(base.TestCase):
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/entity/instance/my_instance_id'),
                                          params=None,
-                                         data=json.dumps({'name': 'some entity'}),
+                                         data=jsonutils.dumps({'name': 'some entity'}),
                                          headers=self.headers)
 
     @mock.patch('requests.put')
@@ -154,8 +155,9 @@ class TestClient(base.TestCase):
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/instance/my_instance_id/resize'),
                                          params=None,
-                                         data=json.dumps({'flavor': 'another flavor',
-                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         data=jsonutils.dumps({
+                                             'flavor': 'another flavor',
+                                             'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          headers=self.headers)
 
     @mock.patch('requests.get')
@@ -193,7 +195,7 @@ class TestClient(base.TestCase):
         self.assertTrue(self.client.create_volume_type('some uuid', 'some name'))
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume_type'),
                                          headers=self.headers,
-                                         data=json.dumps(data),
+                                         data=jsonutils.dumps(data),
                                          params=None)
 
     @mock.patch('requests.delete')
@@ -220,7 +222,8 @@ class TestClient(base.TestCase):
         self.assertTrue(self.client.delete_instance('some uuid', date))
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/instance/some uuid'),
                                          headers=self.headers,
-                                         data=json.dumps({'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         data=jsonutils.dumps({
+                                             'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          params=None)
 
     @mock.patch('requests.post')
@@ -285,8 +288,9 @@ class TestClient(base.TestCase):
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/my_volume_id/resize'),
                                          params=None,
-                                         data=json.dumps({'size': 3,
-                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         data=jsonutils.dumps({
+                                             'size': 3,
+                                             'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          headers=self.headers)
 
     @mock.patch('requests.post')
@@ -302,7 +306,7 @@ class TestClient(base.TestCase):
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/project/tenant_id/volume'),
                                          params=None,
-                                         data=json.dumps({
+                                         data=jsonutils.dumps({
                                              'volume_id': 'my_volume_id',
                                              'volume_type': 'volume_type_id',
                                              'volume_name': 'volume name',
@@ -324,8 +328,9 @@ class TestClient(base.TestCase):
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/my_volume_id/attach'),
                                          params=None,
-                                         data=json.dumps({'attachments': ['instance_id'],
-                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         data=jsonutils.dumps({
+                                             'attachments': ['instance_id'],
+                                             'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          headers=self.headers)
 
     @mock.patch('requests.put')
@@ -340,8 +345,9 @@ class TestClient(base.TestCase):
 
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/my_volume_id/detach'),
                                          params=None,
-                                         data=json.dumps({'attachments': ['instance_id'],
-                                                          'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         data=jsonutils.dumps({
+                                             'attachments': ['instance_id'],
+                                             'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          headers=self.headers)
 
     @mock.patch('requests.delete')
@@ -355,5 +361,6 @@ class TestClient(base.TestCase):
         self.assertTrue(self.client.delete_volume('some uuid', date))
         requests.assert_called_once_with('{}{}'.format(self.url, '/v1/volume/some uuid'),
                                          headers=self.headers,
-                                         data=json.dumps({'date': date.strftime(Client.DATE_FORMAT_BODY)}),
+                                         data=jsonutils.dumps({
+                                             'date': date.strftime(Client.DATE_FORMAT_BODY)}),
                                          params=None)

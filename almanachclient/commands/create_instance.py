@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from oslo_serialization import jsonutils
+
 from dateutil import parser as date_parser
-import json
 
 from cliff.command import Command
 
@@ -32,7 +33,7 @@ class CreateInstanceCommand(Command):
         return parser
 
     def take_action(self, parsed_args):
-        image_meta = json.loads(parsed_args.image_meta) if parsed_args.image_meta else None
+        image_meta = jsonutils.loads(parsed_args.image_meta) if parsed_args.image_meta else None
 
         self.app.get_client().create_instance(parsed_args.tenant_id,
                                               parsed_args.instance_id,
