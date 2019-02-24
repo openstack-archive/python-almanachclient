@@ -13,10 +13,11 @@
 # limitations under the License.
 
 import abc
-import json
 import logging
 
 import requests
+
+from oslo_serialization import jsonutils
 
 from almanachclient import exceptions
 from almanachclient import version as client_version
@@ -58,14 +59,14 @@ class HttpClient(metaclass=abc.ABCMeta):
         return self._parse_response(requests.put(url,
                                                  headers=self._get_headers(),
                                                  params=params,
-                                                 data=json.dumps(data)))
+                                                 data=jsonutils.dumps(data)))
 
     def _post(self, url, data, params=None):
         logger.debug(url)
         response = requests.post(url,
                                  headers=self._get_headers(),
                                  params=params,
-                                 data=json.dumps(data))
+                                 data=jsonutils.dumps(data))
         return self._parse_response(response, 201)
 
     def _delete(self, url, params=None, data=None):
@@ -73,7 +74,7 @@ class HttpClient(metaclass=abc.ABCMeta):
         response = requests.delete(url,
                                    headers=self._get_headers(),
                                    params=params,
-                                   data=json.dumps(data) if data else None)
+                                   data=jsonutils.dumps(data) if data else None)
         return self._parse_response(response, 202)
 
     def _parse_response(self, response, expected_status=200):
